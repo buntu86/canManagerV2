@@ -111,150 +111,55 @@ public class DbfToCms {
     }
     
     private static boolean addArticles(){
-        //http://www.fileformat.info/format/corion-dbase-iii.htm
         //http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm        
-        
+        //http://www.oocities.org/geoff_wass/dBASE/GaryWhite/dBASE/FAQ/qformt.htm#Ac
+        // http://sebastienguillon.com/test/javascript/convertisseur.html
+        //lsb
+
         FileInputStream in = null;
         DataInputStream d = null;
         
         try {
-            in = new FileInputStream(dbfFile.toFile());
-            d = new DataInputStream(new FileInputStream(dbfFile.toFile()));
-            //int c, tmp=0, i, j;
             
-            /*DataInputStream d = new DataInputStream(new FileInputStream(dbfFile.toFile()));
-            d.skip(10);*/
+            byte[] data = Files.readAllBytes(dbfFile);
+            
+            System.out.println(data[8]);
+            System.out.println(data[9]);
 
-            //d.skip(10);
-            in.skip(10);
-            //byte arr1[] = {d.readByte(), d.readByte()};
-            //byte arr[] = {(byte)in.read(),(byte)in.read()};
+            byte firstByte = data[8];
+            byte secondByte = data[9];
+            int result = (secondByte << 8) + firstByte;
             
-            System.out.println(d.readByte());
-            System.out.println(d.readByte());
-            System.out.println(d.readByte());
-            System.out.println(d.readByte());
+            System.out.println("" + result);
             
-            System.out.println(d.readInt());
-            System.out.println(d.readShort());
-            System.out.println(d.readShort());
             
-
+            /*System.out.println(data[6]);
+            System.out.println(data[7]);
             
-            //System.out.println("Length : " + arr1[0].intValue());
-            
-            /*DataInputStream in1 = new DataInputStream(in);
-            byte aByte = in1.readByte();
-            int anInt = in1.readInt();
-            int anotherInt = in1.readInt();
-            short andAShort = in1.readShort(); // 11 bytes read :-)
-            byte[] lotOfBytes = new byte[anInt];
-            in1.readFully(lotOfBytes);            
+            byte firstByte = array[0];
+            byte secondByte = array[1];
+            int result = (secondByte << 8) + firstByte;
+            37 et 15 (base 10) = 0010 0101 et 0000 1111 (binary) = 9488 (base 10)
+            0010 0101 0000 1111 -> 9487
             */
-            /*
-            DataInputStream d = new DataInputStream(new FileInputStream(dbfFile.toFile()));
-            d.readInt();
-            */
-
-            //int x = java.nio.ByteBuffer.wrap(bytes).getInt();
             
-            //http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
-            /*
-            //0
-            System.out.println("Type de DBase " + in.read());
-            //1-3
-            System.out.println("Date : " + (1900+in.read()) + "." + in.read() + "." + in.read());
-            //4-7
-            for (i=0; i<4; i++) {j=in.read(); tmp+=j; System.out.print(j + " ");};
-            System.out.println("Nombre d'enregistrements : " + tmp);
-           
-            //8-9
-            tmp=0;
-            for (i=0; i<2; i++) {j=in.read(); tmp+=j; System.out.print(j + " ");};
-            System.out.println("Nombre de byte de l'entete : " + tmp);            
-            //10-11
-            tmp=0;
-            for (i=0; i<2; i++) {tmp+=in.read();};
-            System.out.println("Nombre de byte des enregistrements : " + tmp);                        
-            //12+13
-            System.out.println(in.read());
-            System.out.println(in.read());
-            //14 flag
-            System.out.println(in.read());
-            //15
-            System.out.println(in.read());
-            //16-27
-            tmp=0;
-            for (i=0; i<12; i++) {j=in.read(); tmp+=j; System.out.print(j + " ");};
-            System.out.println("Reserved : " + tmp);   
-            //28
-            System.out.println("Mdx file : " + tmp); 
-            //29
-            System.out.println("Language driver : " + tmp); 
-            //30+31
-            System.out.println(in.read());
-            System.out.println(in.read());            
-            //32-63
-            tmp=0;
-            for (i=0; i<32; i++) {j=in.read(); tmp+=j; System.out.print(j + " ");};
-            System.out.println("Language driver name : " + tmp);     
-            //64-67
-            tmp=0;
-            for (i=0; i<4; i++) {j=in.read(); tmp+=j; System.out.print(j + " ");};
-            System.out.println(tmp); 
 
-            tmp=0;
-            for (i=0; i<48; i++) {j=in.read(); tmp+=j; System.out.print(j + " ");};
-            System.out.println(tmp); 
+            /*for(int w=318; w<350; w++)
+                System.out.println(w + " | " + (char)data[w]);
+            
 
-            /*
-            while((c = in.read()) != -1){
-                System.out.println(c);
-            }*/
+            //7351
+            
+*/
+
             
         }catch(Exception e){
         }
         
-        
-        /*
-        public class CopyBytes {
-    public static void main(String[] args) throws IOException {
-
-        FileInputStream in = null;
-        FileOutputStream out = null;
-
-        try {
-            in = new FileInputStream("xanadu.txt");
-            out = new FileOutputStream("outagain.txt");
-            int c;
-
-            while ((c = in.read()) != -1) {
-                out.write(c);
-            }
-        } finally {
-            if (in != null) {
-                in.close();
-            }
-            if (out != null) {
-                out.close();
-            }
-        }
-    }
-}
-        */
-        
         return true;
     }
 
-    public static int byteArrayToInt(byte[] b) {
-      if (b.length == 4)
-        return b[0] << 24 | (b[1] & 0xff) << 16 | (b[2] & 0xff) << 8
-            | (b[3] & 0xff);
-      else if (b.length == 2)
-        return 0x00 << 24 | 0x00 << 16 | (b[0] & 0xff) << 8 | (b[1] & 0xff);
 
-      return 0;
-    }
     
 /*
     private void addArticlesOnTable() {
