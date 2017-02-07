@@ -83,13 +83,13 @@ public class DbfToCms {
         String sql = "CREATE TABLE IF NOT EXISTS 'CAN' (\n"
             + "`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\n"
             + "`position`	INTEGER,\n"
-            + "`sousPosition`	INTEGER,\n"
+            + "`subPosition`	INTEGER,\n"
             + "`variable`	INTEGER,\n"
-            + "`ligne`	INTEGER,\n"
+            + "`line`	INTEGER,\n"
             + "`alt`	TEXT,\n"
-            + "`unite`	TEXT,\n"
+            + "`unit`	TEXT,\n"
             + "`publication`	INTEGER,\n"
-            + "`debut`	INTEGER,\n"
+            + "`begin`	INTEGER,\n"
             + "`text`	TEXT\n"
             + ");";
         try (Statement stmt  = connection.createStatement();) {

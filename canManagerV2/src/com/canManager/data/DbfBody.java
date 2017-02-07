@@ -1,6 +1,5 @@
 package com.canManager.data;
 
-import com.canManager.utils.Tools;
 import java.nio.file.Files;
 import javafx.scene.control.Alert;
 
@@ -16,6 +15,7 @@ class DbfBody {
         //http://www.asciitable.com/
         try {
             byte[] data = Files.readAllBytes(header.getPathDbfFile());
+
             int tmp=header.getNumHeader();
 
             for(int j=1; j<header.getNumRecordsTable(); j++)
