@@ -9,8 +9,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         DbfToCms.convert("src/com/canManager/ressources/F24117.dbf");
-        System.exit(0);
-            
+        System.exit(0);    
     }
 
     public static void main(String[] args) {

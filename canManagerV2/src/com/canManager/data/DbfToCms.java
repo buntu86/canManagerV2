@@ -1,8 +1,6 @@
 package com.canManager.data;
 
 import com.canManager.utils.Log;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -111,37 +109,13 @@ public class DbfToCms {
     }
     
     private static boolean addArticles(){
-        //http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm        
-        //http://www.oocities.org/geoff_wass/dBASE/GaryWhite/dBASE/FAQ/qformt.htm#Ac
-        // http://sebastienguillon.com/test/javascript/convertisseur.html
-        //lsb
-
-        FileInputStream in = null;
-        DataInputStream d = null;
         
-        try {
-            byte[] data = Files.readAllBytes(dbfFile);
-            
-            System.out.println("" + byteToIntLsb(data[4], data[5], data[6], data[7]));
-            System.out.println("" + byteToIntLsb(data[8], data[9]));
-            
-        }catch(Exception e){
-        }
+        DbfHeader header = new DbfHeader(dbfFile);
+        DbfBody body = new DbfBody(header);
         
         return true;
     }
 
-    private static int byteToIntLsb(byte firstByte, byte secondByte) {
-        int result = (secondByte << 8) + firstByte;
-        
-        return result;
-    }
-
-    private static int byteToIntLsb(byte firstByte, byte secondByte, byte thirdByte, byte fourthByte){
-        int result = (fourthByte << 24) + (thirdByte << 16) + (secondByte << 8) + firstByte;
-        
-        return result;
-    }
 
     
 /*
