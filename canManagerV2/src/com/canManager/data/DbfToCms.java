@@ -120,38 +120,10 @@ public class DbfToCms {
         DataInputStream d = null;
         
         try {
-            
             byte[] data = Files.readAllBytes(dbfFile);
             
-            System.out.println(data[8]);
-            System.out.println(data[9]);
-
-            byte firstByte = data[8];
-            byte secondByte = data[9];
-            int result = (secondByte << 8) + firstByte;
-            
-            System.out.println("" + result);
-            
-            
-            /*System.out.println(data[6]);
-            System.out.println(data[7]);
-            
-            byte firstByte = array[0];
-            byte secondByte = array[1];
-            int result = (secondByte << 8) + firstByte;
-            37 et 15 (base 10) = 0010 0101 et 0000 1111 (binary) = 9488 (base 10)
-            0010 0101 0000 1111 -> 9487
-            */
-            
-
-            /*for(int w=318; w<350; w++)
-                System.out.println(w + " | " + (char)data[w]);
-            
-
-            //7351
-            
-*/
-
+            System.out.println("" + byteToIntLsb(data[4], data[5], data[6], data[7]));
+            System.out.println("" + byteToIntLsb(data[8], data[9]));
             
         }catch(Exception e){
         }
@@ -159,6 +131,17 @@ public class DbfToCms {
         return true;
     }
 
+    private static int byteToIntLsb(byte firstByte, byte secondByte) {
+        int result = (secondByte << 8) + firstByte;
+        
+        return result;
+    }
+
+    private static int byteToIntLsb(byte firstByte, byte secondByte, byte thirdByte, byte fourthByte){
+        int result = (fourthByte << 24) + (thirdByte << 16) + (secondByte << 8) + firstByte;
+        
+        return result;
+    }
 
     
 /*
