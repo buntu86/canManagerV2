@@ -1,18 +1,29 @@
 package com.canManager.data;
 
+import com.canManager.utils.Log;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.control.Alert;
 
-class DbfBody {
+public class ReadDbf {
 
-    private int sizeHeader, sizeRecord;
+    private static Path dbfFile = null;
+    private static ArrayList<Articles> listArticles = new ArrayList<>();
     
-    DbfBody(DbfHeader header) {
+    public static List<Articles> getListArticles(){
+        Log.msg(0, "listArticles");
+        if(listArticles.isEmpty())
+            importFromDbf();
 
-        //é -> -126
-        //à -> -123
-        //è -> -118
-        //http://www.asciitable.com/
+        return listArticles;
+    }
+    
+    private static void importFromDbf()
+    {
+        DbfHeader header = new DbfHeader(dbfFile);   
         try {
             byte[] data = Files.readAllBytes(header.getPathDbfFile());
 
@@ -44,7 +55,26 @@ class DbfBody {
             alert.setTitle("DbfBody");
             alert.setHeaderText(null);
             alert.setContentText(header.getPathDbfFile().toString() + "\nErreur lors de l'ouverture du fichier\nVeuillez choisir un autre nom de fichier et réessayer.\nErreur : " + e.getMessage());
-            alert.showAndWait();        
-        }      
+            alert.showAndWait();       
+        }         
+    }
+    
+    public static boolean setDbfFile(String str){
+        dbfFile = Paths.get(str);
+        if(Files.exists(dbfFile))
+        {
+            Log.msg(0, "Le fichier dbf existe.");
+            return true;
+        }
+        else
+        {
+            Log.msg(1, "Le fichier dbf n'existe pas.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Convertir");
+            alert.setHeaderText(null);
+            alert.setContentText("Le fichier \"" + dbfFile.toString() + "\" n'existe pas.");
+            alert.showAndWait();
+            return false;
+        }
     }
 }

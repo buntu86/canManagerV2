@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.scene.control.Alert;
 
-public class DbfToCms {
+public class Z_OLDDbfToCms {
     
     private static Path dbfFile, cmsFile;
     private static Connection connection = null; 
@@ -111,7 +111,7 @@ public class DbfToCms {
     private static boolean addArticles(){
         
         DbfHeader header = new DbfHeader(dbfFile);
-        DbfBody body = new DbfBody(header);
+        Z_OLDDbfBody body = new Z_OLDDbfBody(header);
         
         return true;
     }
