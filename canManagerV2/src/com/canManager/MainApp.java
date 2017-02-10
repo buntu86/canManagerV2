@@ -8,9 +8,10 @@ public class MainApp extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        ReadDbf.setDbfFile("src/com/canManager/ressources/F24117.dbf");
-        ReadDbf.getListArticles();
-        System.exit(0);    
+        ReadDbf.setDbfFile("src/com/canManager/ressources/F24116.dbf");
+        System.out.println("size " + ReadDbf.getListArticles().size());
+        System.out.println("size " + ReadDbf.getListArticles().size());
+        System.exit(0);
     }
 
     public static void main(String[] args) {

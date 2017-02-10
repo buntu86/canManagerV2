@@ -27,9 +27,9 @@ public class DbfHeader {
             setDateM(data[2]);
             setDateD(data[3]);
             
-            setNumRecordsTable(Tools.byteToIntLsb(data[4], data[5], data[6], data[7]));
-            setNumHeader(Tools.byteToIntLsb(data[8], data[9]));
-            setNumRecord(Tools.byteToIntLsb(data[10], data[11]));
+            setNumRecordsTable(byteToIntLsb(data[4], data[5], data[6], data[7]));
+            setNumHeader(byteToIntLsb(data[8], data[9]));
+            setNumRecord(byteToIntLsb(data[10], data[11]));
 
         } catch(Exception e){
             System.out.println("[ X ] " + e.getMessage());
@@ -101,4 +101,16 @@ public class DbfHeader {
     public Path getPathDbfFile(){
         return this.dbfFile;
     }
+    
+    private int byteToIntLsb(byte firstByte, byte secondByte) {
+        int result = (secondByte << 8) + firstByte;
+        
+        return result;
+    }
+
+    private int byteToIntLsb(byte firstByte, byte secondByte, byte thirdByte, byte fourthByte){
+        int result = (fourthByte << 24) + (thirdByte << 16) + (secondByte << 8) + firstByte;
+        
+        return result;
+    }    
 }

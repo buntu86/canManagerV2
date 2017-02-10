@@ -7,14 +7,13 @@ import javafx.beans.property.StringProperty;
 
 public class Articles {
 
-    private IntegerProperty ID, position, subPosition, variable, line, publication, begin;
-    private StringProperty alt, unit, text;
+    private IntegerProperty  line, publication, begin;
+    private StringProperty alt, unit, text, position, uPosition, variable;
 
-    public Articles(int ID, int position, int subPosition, int variable, int line, String alt, String unit, int publication, int begin, String text){
-        this.ID = new SimpleIntegerProperty(ID);
-        this.position = new SimpleIntegerProperty(position);
-        this.subPosition = new SimpleIntegerProperty(subPosition);
-        this.variable = new SimpleIntegerProperty(variable);
+    public Articles(String position, String uPosition, String variable, int line, String alt, String unit, int publication, int begin, String text){
+        this.position = new SimpleStringProperty(position);
+        this.uPosition = new SimpleStringProperty(uPosition);
+        this.variable = new SimpleStringProperty(variable);
         this.line = new SimpleIntegerProperty(line);
         this.alt = new SimpleStringProperty(alt);
         this.unit = new SimpleStringProperty(unit);
@@ -22,12 +21,9 @@ public class Articles {
         this.begin = new SimpleIntegerProperty(begin);
         this.text = new SimpleStringProperty(text);
     }
-
+}
     //GET
-    public int getID(){
-        return ID.get();
-    }
-    public int getPosition(){
+    /*public int getPosition(){
         return position.get();
     }
     public int getSubPosition(){
@@ -56,9 +52,6 @@ public class Articles {
     }    
     
     //PROPERTY
-    public IntegerProperty IDProperty(){
-        return ID;
-    }    
     public IntegerProperty positionProperty(){
         return position;
     }
