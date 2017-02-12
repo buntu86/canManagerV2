@@ -1,6 +1,5 @@
 package com.canManager.data;
 
-import com.canManager.utils.Tools;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import javafx.scene.control.Alert;
@@ -10,12 +9,7 @@ public class DbfHeader {
 
     private int version, dateY, dateM, dateD, numRecordsTable, numHeader, numRecord;
     private Path dbfFile;
-    
-    //http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm        
-    //http://www.oocities.org/geoff_wass/dBASE/GaryWhite/dBASE/FAQ/qformt.htm#Ac
-    // http://sebastienguillon.com/test/javascript/convertisseur.html
-    //lsb
-    
+        
     public DbfHeader(Path dbfFile){
         
         try {

@@ -1,27 +1,27 @@
 package com.canManager.data;
 
 import com.canManager.utils.Log;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.control.Alert;
 
 public class ReadDbf {
 
     private static Path dbfFile = null;
-    private static final ArrayList<Articles> listArticles = new ArrayList<>();
+    private static ArrayList<Articles> listArticles = new ArrayList<>();
     private static byte[] data = null;
     private static int start = 0;
     
-    public static List<Articles> getListArticles(){
+    protected static ArrayList<Articles> getListArticles(){
         
         if(listArticles.isEmpty())
         {
             importListArticlesFromDbf();
             Log.msg(0, "importListArticlesFromDBF");
+            simplification();
+            Log.msg(0, "simplification");
         }
 
         return listArticles;
@@ -45,7 +45,7 @@ public class ReadDbf {
                 String alt = getStr(10, 10);
                 String unit = getStr(11, 12);
                 
-                int pub = (char)data[start+13]*10 + (char)data[start+14];
+                String pub = getStr(13, 14);
                 int begin = (char)data[start+15]*10 + (char)data[start+16];
                 
                 String text = getStr(17, 77);
@@ -53,7 +53,7 @@ public class ReadDbf {
                 /*byte[] tmpByte = tmpString.getBytes("IBM437");
                 String text = new String(tmpByte);*/
                 
-                System.out.println(pos + "." + upos + " " + var + " " + text);
+                //System.out.println(pos + "." + upos + " " + var + " " + text);
 
                 listArticles.add(new Articles(pos, upos, var, line, alt, unit, pub, begin, text.trim()));
                 
@@ -92,12 +92,35 @@ public class ReadDbf {
     private static String getStr(int i1, int i2) {
         String str = new String();
         for(int i=i1; i<=i2; i++)
-        {
-            //System.out.print(String.valueOf((char)data[start + i]));
             str = str + String.valueOf((char)data[start + i]);
-        }
-        //System.out.print("|");
         
         return str;
+    }
+
+    private static void simplification() {
+        ArrayList<Articles> tmpList = new ArrayList<>();
+        
+        for(int i=0; i<listArticles.size(); i++){
+           if(!tmpList.isEmpty())
+           {
+               if(listArticles.get(i).getPos().equals(tmpList.get(tmpList.size()-1).getPos()) & 
+                       listArticles.get(i).getUpos().equals(tmpList.get(tmpList.size()-1).getUpos()) & 
+                       listArticles.get(i).getVar().equals(tmpList.get(tmpList.size()-1).getVar()))
+                   tmpList.get(tmpList.size()-1).simplificationText(listArticles.get(i));
+                   
+               else
+               {
+                   tmpList.add(listArticles.get(i));
+               }
+           }
+           else
+               tmpList.add(listArticles.get(i));
+        }
+        
+        /*for(int i=0; i<tmpList.size(); i++){
+            System.out.println(tmpList.get(i).getPos() + "." + tmpList.get(i).getUpos() + " " + tmpList.get(i).getVar() + " " + tmpList.get(i).getText());
+        }*/
+
+        listArticles=tmpList;
     }
 }

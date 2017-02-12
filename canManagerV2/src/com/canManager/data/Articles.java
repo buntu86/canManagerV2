@@ -6,31 +6,34 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Articles {
+    
+    private IntegerProperty  line, begin;
+    private StringProperty alt, unit, text, pos, upos, var, pub;
 
-    private IntegerProperty  line, publication, begin;
-    private StringProperty alt, unit, text, position, uPosition, variable;
-
-    public Articles(String position, String uPosition, String variable, int line, String alt, String unit, int publication, int begin, String text){
-        this.position = new SimpleStringProperty(position);
-        this.uPosition = new SimpleStringProperty(uPosition);
-        this.variable = new SimpleStringProperty(variable);
+    public Articles(String pos, String upos, String var, int line, String alt, String unit, String pub, int begin, String text){
+        this.pos = new SimpleStringProperty(pos);
+        this.upos = new SimpleStringProperty(upos);
+        this.var = new SimpleStringProperty(var);
         this.line = new SimpleIntegerProperty(line);
         this.alt = new SimpleStringProperty(alt);
         this.unit = new SimpleStringProperty(unit);
-        this.publication = new SimpleIntegerProperty(publication);
+        this.pub = new SimpleStringProperty(pub);
         this.begin = new SimpleIntegerProperty(begin);
         this.text = new SimpleStringProperty(text);
     }
-}
+
     //GET
-    /*public int getPosition(){
-        return position.get();
+    public String getPos(){
+        return pos.get();
     }
-    public int getSubPosition(){
-        return subPosition.get();
+    public int getPosInt(){
+        return Integer.parseInt(pos.get());
     }
-    public int getVariable(){
-        return variable.get();
+    public String getUpos(){
+        return upos.get();
+    }
+    public String getVar(){
+        return var.get();
     }
     public int getLine() {
         return line.get();
@@ -41,16 +44,33 @@ public class Articles {
     public String getUnit() {
         return unit.get();
     }
-    public int getPublication() {
-        return publication.get();
+    public String getPub() {
+        return pub.get();
     }
     public int getBegin() {
         return begin.get();
     }
     public String getText() {
         return text.get();
-    }    
+    }
+    public String getTextTitle() {     
+        String tmp = text.get().replaceAll("\n", " ");
+        tmp = tmp.replaceAll("- ", "");
+        
+        if(tmp.contains("----"))
+            tmp = tmp.substring(0, tmp.indexOf("----"));
+
+        return tmp;
+    }
     
+    //SET
+    public void simplificationText(Articles tmpArt) {
+        this.line.set(tmpArt.getLine());
+        this.begin.set(tmpArt.getBegin());
+        this.text.set(this.text.get() + "\n" +  tmpArt.getText());
+    }
+}
+    /*
     //PROPERTY
     public IntegerProperty positionProperty(){
         return position;
