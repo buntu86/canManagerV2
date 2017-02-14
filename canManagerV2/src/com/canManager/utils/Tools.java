@@ -1,6 +1,15 @@
 package com.canManager.utils;
 
-public class Tools {
-    
+import com.canManager.MainApp;
 
+public class Tools {
+    private static MainApp main;
+    
+    public static void setTitlePrimaryStage(String str){
+        main.setTitlePrimaryStage(str);
+    }
+
+    public static void setMain(MainApp main) {
+        Tools.main = main;
+    }
 }

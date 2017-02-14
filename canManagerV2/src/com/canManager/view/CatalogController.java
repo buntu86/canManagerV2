@@ -2,6 +2,7 @@ package com.canManager.view;
 
 import com.canManager.data.Articles;
 import com.canManager.data.Catalog;
+import com.canManager.utils.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ public class CatalogController implements Initializable {
 
     void iniCatalog(String str) {
         Catalog.setCatalog(str);
+        Tools.setTitlePrimaryStage(Catalog.getTitle());
         TreeItem<String> tree = new TreeItem<> ("CAN");
         
         for(Articles artLev1 : Catalog.getLevel1()){

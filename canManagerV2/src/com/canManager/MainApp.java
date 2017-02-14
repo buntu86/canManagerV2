@@ -1,6 +1,7 @@
 package com.canManager;
 
 import com.canManager.utils.Log;
+import com.canManager.utils.Tools;
 import com.canManager.view.RootLayoutController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,9 +16,11 @@ public class MainApp extends Application {
     
     @Override
     public void start(Stage primaryStage) { 
+        Tools.setMain(this);
         this.primaryStage = primaryStage;
         setTitlePrimaryStage("");
-        showRootLayout();        
+        showRootLayout(); 
+        
     }    
     
     public void showRootLayout() {
@@ -37,7 +40,6 @@ public class MainApp extends Application {
             Log.msg(1, e.getMessage());
         }
     }           
-    
     
     public Stage getPrimaryStage() {
         return this.primaryStage;

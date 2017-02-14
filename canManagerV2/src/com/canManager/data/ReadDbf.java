@@ -1,6 +1,7 @@
 package com.canManager.data;
 
 import com.canManager.utils.Log;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,6 +30,7 @@ public class ReadDbf {
     
     private static void importListArticlesFromDbf()
     {        
+        Charset stringCharset = Charset.forName("IBM437");
         DbfHeader header = new DbfHeader(dbfFile);           
         try {
             data = Files.readAllBytes(header.getPathDbfFile());
@@ -49,11 +51,14 @@ public class ReadDbf {
                 int begin = (char)data[start+15]*10 + (char)data[start+16];
                 
                 String text = getStr(17, 77);
-
-                /*byte[] tmpByte = tmpString.getBytes("IBM437");
-                String text = new String(tmpByte);*/
-                
-                //System.out.println(pos + "." + upos + " " + var + " " + text);
+                for(int w=17; w<=77; w++)
+                {
+                    if(data[start+w]<0)
+                        System.out.println(data[start+w] + " | " + text);
+                }
+                //text = new String(text.getBytes("IBM437"));
+                //https://www.ibm.com/support/knowledgecenter/en/SSMKHH_9.0.0/com.ibm.etools.mft.doc/ac00408_.htm
+                //https://fr.wikipedia.org/wiki/Page_de_code_437
 
                 listArticles.add(new Articles(pos, upos, var, line, alt, unit, pub, begin, text.trim()));
                 
@@ -92,11 +97,29 @@ public class ReadDbf {
     private static String getStr(int i1, int i2) {
         String str = new String();
         for(int i=i1; i<=i2; i++)
-            str = str + String.valueOf((char)data[start + i]);
+        {
+            int tmp=0;
+            if(data[start+i]<0)
+               tmp=data[start+i]+256;
+            else
+                tmp=data[start+i];
+            
+            str = str + String.valueOf((char)tmp);
+        }
         
         return str;
     }
 
+/*
+    private static String getStr(int i1, int i2) {
+        String str = new String();
+        for(int i=i1; i<=i2; i++)
+            str = str + String.valueOf((char)data[start + i]);
+        
+        return str;
+    }    
+    */    
+    
     private static void simplification() {
         ArrayList<Articles> tmpList = new ArrayList<>();
         
@@ -116,11 +139,6 @@ public class ReadDbf {
            else
                tmpList.add(listArticles.get(i));
         }
-        
-        /*for(int i=0; i<tmpList.size(); i++){
-            System.out.println(tmpList.get(i).getPos() + "." + tmpList.get(i).getUpos() + " " + tmpList.get(i).getVar() + " " + tmpList.get(i).getText());
-        }*/
-
         listArticles=tmpList;
     }
 }

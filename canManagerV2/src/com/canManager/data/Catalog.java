@@ -6,11 +6,13 @@ import java.util.ArrayList;
 public class Catalog {
     
     private static ArrayList<Articles> listArticles = new ArrayList<>();
+    private static String title;
     
     public static void setCatalog(String strCatalog) {
         ReadDbf.setDbfFile("src/com/canManager/ressources/" + strCatalog + ".dbf");
         listArticles = ReadDbf.getListArticles();
         Log.msg(0, "setCatalog");
+        setTitle(strCatalog);
     }
     
     public static ArrayList<Articles> getCatalog(){
@@ -70,5 +72,12 @@ public class Catalog {
             }
         }
         return tmpList;
+    }
+
+    public static void setTitle(String strCatalog) {
+        Catalog.title = strCatalog;
+    }
+    public static String getTitle(){
+        return Catalog.title;
     }
 }
