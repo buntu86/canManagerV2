@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.control.Alert;
 
 public class ReadDbf {
@@ -50,7 +51,8 @@ public class ReadDbf {
                 String pub = getStr(13, 14);
                 int begin = (char)data[start+15]*10 + (char)data[start+16];
                 
-                String text = getStr(17, 77);
+                String text = new String(getStr(17, 77).getBytes(), "IBM437");
+
                 for(int w=17; w<=77; w++)
                 {
                     if(data[start+w]<0)
@@ -96,16 +98,26 @@ public class ReadDbf {
 
     private static String getStr(int i1, int i2) {
         String str = new String();
+        //http://stackoverflow.com/questions/30776625/append-byte-after-byte-array
+        List<Byte> tmpByte = new ArrayList<>();
+        
         for(int i=i1; i<=i2; i++)
         {
+            tmpByte.add(data[start+i]);
+            /*
             int tmp=0;
+            
             if(data[start+i]<0)
-               tmp=data[start+i]+256;
+               tmp=data[start+i];
             else
                 tmp=data[start+i];
-            
             str = str + String.valueOf((char)tmp);
+            
+            //str += String.valueOf((char)data[start+i]);*/
         }
+        
+        //byte[] tmpByte2 = tmpByte.toArray(new Byte[tmpByte.size()]);
+        
         
         return str;
     }
