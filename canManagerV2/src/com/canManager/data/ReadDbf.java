@@ -14,6 +14,7 @@ public class ReadDbf {
     private static Path dbfFile = null;
     private static ArrayList<Articles> listArticles = new ArrayList<>();
     private static byte[] data = null;
+    private static String s = null;
     private static int start = 0;
     
     protected static ArrayList<Articles> getListArticles(){
@@ -35,36 +36,46 @@ public class ReadDbf {
         DbfHeader header = new DbfHeader(dbfFile);           
         try {
             data = Files.readAllBytes(header.getPathDbfFile());
+            s = new String(data, "IBM437");
             start=header.getNumHeader()+1;
             
             for(int j=0; j<header.getNumRecordsTable(); j++)
             {                
-                String pos = getStr(0, 2);
-                String upos = getStr(3, 5);
-                String var = getStr(6, 7);
+                int i8=Character.getNumericValue(s.charAt(start+8)), 
+                        i9=Character.getNumericValue(s.charAt(start+9)), 
+                        i15=Character.getNumericValue(s.charAt(start+15)), 
+                        i16=Character.getNumericValue(s.charAt(start+16));
                 
-                int line = (char)data[start+8]*10 + (char)data[start+9];
+                if(i8<0)
+                    i8=0;
+                if(i9<0)
+                    i9=0;
+                if(i15<0)
+                    i15=0;
+                if(i16<0)
+                    i16=0;
                 
-                String alt = getStr(10, 10);
-                String unit = getStr(11, 12);
+                String pos = s.substring(start+0, start+2);
+                System.out.println(pos + "|" + s.substring(start+0, start+2));
+                String upos = s.substring(start+3, start+5);
+                String var = s.substring(start+6, start+7);
                 
-                String pub = getStr(13, 14);
-                int begin = (char)data[start+15]*10 + (char)data[start+16];
+                int line = i8*10 + i9;
                 
-                String text = new String(getStr(17, 77).getBytes(), "IBM437");
-
-                for(int w=17; w<=77; w++)
-                {
-                    if(data[start+w]<0)
-                        System.out.println(data[start+w] + " | " + text);
-                }
-                //text = new String(text.getBytes("IBM437"));
-                //https://www.ibm.com/support/knowledgecenter/en/SSMKHH_9.0.0/com.ibm.etools.mft.doc/ac00408_.htm
-                //https://fr.wikipedia.org/wiki/Page_de_code_437
-
-                listArticles.add(new Articles(pos, upos, var, line, alt, unit, pub, begin, text.trim()));
+                String alt = Character.toString(s.charAt(start+10));
+                String unit = s.substring(start+11, start+12);
+                
+                String pub = s.substring(start+13, start+14);
+                
+                int begin = i15*10 + i16;
+                
+                String text = s.substring(start+17, start+77).trim();
+                
+                listArticles.add(new Articles(pos, upos, var, line, alt, unit, pub, begin, text));
+                
                 
                 start+=header.getNumRecord();
+                
             }
             
         } catch(Exception e){
@@ -96,42 +107,6 @@ public class ReadDbf {
         }
     }
 
-    private static String getStr(int i1, int i2) {
-        String str = new String();
-        //http://stackoverflow.com/questions/30776625/append-byte-after-byte-array
-        List<Byte> tmpByte = new ArrayList<>();
-        
-        for(int i=i1; i<=i2; i++)
-        {
-            tmpByte.add(data[start+i]);
-            /*
-            int tmp=0;
-            
-            if(data[start+i]<0)
-               tmp=data[start+i];
-            else
-                tmp=data[start+i];
-            str = str + String.valueOf((char)tmp);
-            
-            //str += String.valueOf((char)data[start+i]);*/
-        }
-        
-        //byte[] tmpByte2 = tmpByte.toArray(new Byte[tmpByte.size()]);
-        
-        
-        return str;
-    }
-
-/*
-    private static String getStr(int i1, int i2) {
-        String str = new String();
-        for(int i=i1; i<=i2; i++)
-            str = str + String.valueOf((char)data[start + i]);
-        
-        return str;
-    }    
-    */    
-    
     private static void simplification() {
         ArrayList<Articles> tmpList = new ArrayList<>();
         

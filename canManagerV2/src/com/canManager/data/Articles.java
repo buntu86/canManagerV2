@@ -11,6 +11,9 @@ public class Articles {
     private StringProperty alt, unit, text, pos, upos, var, pub;
 
     public Articles(String pos, String upos, String var, int line, String alt, String unit, String pub, int begin, String text){
+        if(pos.length()==2)
+            pos=0+pos;
+        
         this.pos = new SimpleStringProperty(pos);
         this.upos = new SimpleStringProperty(upos);
         this.var = new SimpleStringProperty(var);
