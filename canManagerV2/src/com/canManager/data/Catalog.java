@@ -1,6 +1,7 @@
 package com.canManager.data;
 
 import com.canManager.utils.Log;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class Catalog {
@@ -9,10 +10,11 @@ public class Catalog {
     private static String title;
     
     public static void setCatalog(String strCatalog) {
-        ReadDbf.setDbfFile("src/com/canManager/ressources/" + strCatalog + ".dbf");
+        ReadDbf.setDbfFile(strCatalog);
         listArticles = ReadDbf.getListArticles();
         Log.msg(0, "setCatalog");
-        setTitle(strCatalog);
+        
+        setTitle(Paths.get(strCatalog).getFileName().toString());
     }
     
     public static ArrayList<Articles> getCatalog(){

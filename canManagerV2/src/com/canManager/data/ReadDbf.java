@@ -1,12 +1,10 @@
 package com.canManager.data;
 
 import com.canManager.utils.Log;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.control.Alert;
 
 public class ReadDbf {
@@ -32,7 +30,6 @@ public class ReadDbf {
     
     private static void importListArticlesFromDbf()
     {        
-        Charset stringCharset = Charset.forName("IBM437");
         DbfHeader header = new DbfHeader(dbfFile);           
         try {
             data = Files.readAllBytes(header.getPathDbfFile());
@@ -55,10 +52,9 @@ public class ReadDbf {
                 if(i16<0)
                     i16=0;
                 
-                String pos = s.substring(start+0, start+2);
-                System.out.println(pos + "|" + s.substring(start+0, start+2));
-                String upos = s.substring(start+3, start+5);
-                String var = s.substring(start+6, start+7);
+                String pos = new StringBuilder().append(s.charAt(start+0)).append(s.charAt(start+1)).append(s.charAt(start+2)).toString();
+                String upos = new StringBuilder().append(s.charAt(start+3)).append(s.charAt(start+4)).append(s.charAt(start+5)).toString();                                        
+                String var = new StringBuilder().append(s.charAt(start+6)).append(s.charAt(start+7)).toString();
                 
                 int line = i8*10 + i9;
                 
@@ -73,9 +69,7 @@ public class ReadDbf {
                 
                 listArticles.add(new Articles(pos, upos, var, line, alt, unit, pub, begin, text));
                 
-                
                 start+=header.getNumRecord();
-                
             }
             
         } catch(Exception e){
@@ -90,6 +84,7 @@ public class ReadDbf {
     
     public static boolean setDbfFile(String str){
         dbfFile = Paths.get(str);
+        listArticles.clear();
         if(Files.exists(dbfFile))
         {
             Log.msg(0, "Le fichier dbf existe.");

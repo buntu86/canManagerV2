@@ -14,15 +14,20 @@
           <Menu mnemonicParsing="false" text="Fichier">
             <items>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleCloseCatalog" text="Fermer catalogue" />
                   <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Quitter" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="?">
+          <Menu mnemonicParsing="false" text="Catalogue">
             <items>
-              <MenuItem mnemonicParsing="false" text="A propos de" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleOpenCatalog" text="Ouvrir catalogue" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleCloseCatalog" text="Fermer catalogue" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="?">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="A propos de" />
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>

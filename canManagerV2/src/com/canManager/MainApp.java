@@ -1,5 +1,6 @@
 package com.canManager;
 
+import com.canManager.utils.Config;
 import com.canManager.utils.Log;
 import com.canManager.utils.Tools;
 import com.canManager.view.RootLayoutController;
@@ -17,6 +18,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) { 
         Tools.setMain(this);
+        Config.iniConfig();
         this.primaryStage = primaryStage;
         setTitlePrimaryStage("");
         showRootLayout(); 
@@ -31,7 +33,6 @@ public class MainApp extends Application {
             
             RootLayoutController controller = loader.getController();
             controller.setRootLayout(rootLayout);
-            controller.showCatalog("F24117");
             
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
