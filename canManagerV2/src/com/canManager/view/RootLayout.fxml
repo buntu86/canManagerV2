@@ -23,6 +23,12 @@
                   <MenuItem mnemonicParsing="false" onAction="#handleCloseCatalog" text="Fermer catalogue" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Soumission">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleOpenSoumission" text="Ouvrir soumission" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleCloseSoumission" text="Fermer soumission" />
+               </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="?">
                <items>
                   <MenuItem mnemonicParsing="false" text="A propos de" />
