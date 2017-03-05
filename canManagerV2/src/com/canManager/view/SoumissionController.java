@@ -1,14 +1,17 @@
 package com.canManager.view;
 
-import com.canManager.data.soumission.CatalogSoum;
-import com.canManager.data.soumission.PosSoum;
-import com.canManager.data.soumission.Soumission;
+import com.canManager.MainApp;
+import com.canManager.model.CatalogSoum;
+import com.canManager.model.Soumission;
+import com.canManager.utils.Log;
 import com.canManager.utils.Tools;
-import javafx.beans.value.ChangeListener;
+import java.io.IOException;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 
 public class SoumissionController {
 
@@ -29,26 +32,41 @@ public class SoumissionController {
             catalog.setIdTab(i);
             i++;
             
-            rootTabPane.getTabs().add(new Tab(strCatalog));            
+            rootTabPane.getTabs().add(new Tab(strCatalog));  
+            
+            if(catalog.getAnneeAffiche()==0)
+                rootTabPane.getTabs().get(catalog.getIdTab()).setDisable(true);
         }  
-        
         updateViewer();
         
         //Listener change tab
-        rootTabPane.getSelectionModel().selectedItemProperty().addListener(
-            new ChangeListener<Tab>() {
-                @Override
-                public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
-                    updateViewer();
-                }
-            }
-        ); 
+        rootTabPane.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Tab> ov, Tab t, Tab t1) -> {
+            updateViewer();
+        });
     }
     
     private void updateViewer(){
         int idTab=rootTabPane.getSelectionModel().getSelectedIndex();
         CatalogSoum catalog = Soumission.getCatalogSoumWithIdTab(idTab).get();
-        
-        System.out.println(catalog.getNumTitre());
+
+        if(!rootTabPane.getSelectionModel().getSelectedItem().isDisable())
+        {            
+            AnchorPane table = null;
+            try {
+                int index=rootTabPane.getSelectionModel().getSelectedIndex();
+                
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(MainApp.class.getResource("view/SoumissionTable.fxml"));
+                table = (AnchorPane) loader.load();
+                SoumissionTableController controller = loader.getController();
+                controller.ini(index);
+                
+                rootTabPane.getSelectionModel().getSelectedItem().setContent(table);
+            }
+            catch(IOException e){
+                Log.msg(1, "Erreur file SoumissionTable.fxml" + e.getMessage());
+            }
+        }        
     }
 }
+

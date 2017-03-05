@@ -1,7 +1,7 @@
 package com.canManager.view;
 
-import com.canManager.data.Articles;
-import com.canManager.data.Catalog;
+import com.canManager.model.Articles;
+import com.canManager.model.Catalog;
 import com.canManager.utils.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;

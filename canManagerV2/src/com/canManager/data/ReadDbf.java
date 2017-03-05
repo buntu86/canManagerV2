@@ -1,5 +1,6 @@
 package com.canManager.data;
 
+import com.canManager.model.Articles;
 import com.canManager.utils.Log;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +16,7 @@ public class ReadDbf {
     private static String s = null;
     private static int start = 0;
     
-    protected static ArrayList<Articles> getListArticles(){
+    public static ArrayList<Articles> getListArticles(){
         
         if(listArticles.isEmpty())
         {

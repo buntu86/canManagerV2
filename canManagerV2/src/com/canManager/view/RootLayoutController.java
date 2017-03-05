@@ -1,7 +1,7 @@
 package com.canManager.view;
 
 import com.canManager.MainApp;
-import com.canManager.data.Catalog;
+import com.canManager.model.Soumission;
 import com.canManager.utils.Config;
 import com.canManager.utils.Log;
 import com.canManager.utils.Tools;
@@ -84,14 +84,15 @@ public class RootLayoutController {
     private void handleOpenSoumission(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("SIA451 file", "*.01s")
+            new FileChooser.ExtensionFilter("SIA451 file", "*.01s")
         );       
         fileChooser.setInitialDirectory(Config.getCatalogDirectory().toFile());
         File selectedFile = fileChooser.showOpenDialog(null);
         if(selectedFile != null)
         {   
             rootLayout.getChildren().remove(catalogLayout);            
-            rootLayout.getChildren().remove(soumissionLayout);            
+            rootLayout.getChildren().remove(soumissionLayout); 
+
             showSoumission(selectedFile.toString());
         }   
         
@@ -99,7 +100,7 @@ public class RootLayoutController {
             System.out.println("Selection du fichier annulé");  
     }
     
-    public void showSoumission(String str){
+    public void showSoumission(String str){        
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/com/canManager/view/Soumission.fxml"));

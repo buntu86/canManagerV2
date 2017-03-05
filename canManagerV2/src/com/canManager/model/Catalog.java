@@ -1,8 +1,10 @@
-package com.canManager.data;
+package com.canManager.model;
 
+import com.canManager.data.ReadDbf;
 import com.canManager.utils.Log;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Catalog {
     
@@ -10,6 +12,7 @@ public class Catalog {
     private static String title;
     
     public static void setCatalog(String strCatalog) {
+        Log.msg(0, "setCatalog1");
         ReadDbf.setDbfFile(strCatalog);
         listArticles = ReadDbf.getListArticles();
         Log.msg(0, "setCatalog");
@@ -74,6 +77,30 @@ public class Catalog {
             }
         }
         return tmpList;
+    }
+    
+    public static Optional<Articles> getArticle(String pos, String upos, String var){
+        Optional<Articles> artFromStream = null;
+        
+        artFromStream = listArticles
+                .stream()
+                .filter(art -> art.getPos().equals(pos) && art.getUpos().equals(upos) && art.getVar().equals(var))
+                .findFirst();
+        
+        return artFromStream;
+    }
+    
+    public static String getDescArticle(String pos, String upos, String var){
+        String artFromStream = "";
+
+        artFromStream = listArticles
+                .stream()
+                .filter(art -> art.getPos().equals(pos) && art.getUpos().equals(upos) && art.getVar().equals(var))
+                .findFirst()
+                .toString();        
+        
+        return artFromStream;        
+
     }
 
     public static void setTitle(String strCatalog) {
