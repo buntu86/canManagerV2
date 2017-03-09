@@ -16,6 +16,7 @@ public class Config {
     public static void iniConfig(){
         try {            
             prop.load(new FileInputStream("resources/config.properties"));
+            Log.msg(0, prop.getProperty("catalogDirectory"));
             setCatalogDirectory(prop.getProperty("catalogDirectory"));
             Log.msg(0, "iniConfig");
             

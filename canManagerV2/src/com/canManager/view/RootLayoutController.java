@@ -1,7 +1,6 @@
 package com.canManager.view;
 
 import com.canManager.MainApp;
-import com.canManager.model.Soumission;
 import com.canManager.utils.Config;
 import com.canManager.utils.Log;
 import com.canManager.utils.Tools;
@@ -68,7 +67,7 @@ public class RootLayoutController {
             rootLayout.setCenter(catalogLayout);
 
         } catch (Exception e) {
-            Log.msg(1, e.getMessage());
+            Log.msg(1, "showCatalog | " + e.getMessage());
         }
     }
     
@@ -112,7 +111,7 @@ public class RootLayoutController {
             rootLayout.setCenter(soumissionLayout);
 
         } catch (Exception e) {
-            Log.msg(1, e.getMessage());
+            Log.msg(1, "showSoumission | " + e.getMessage());
         }
     }    
 

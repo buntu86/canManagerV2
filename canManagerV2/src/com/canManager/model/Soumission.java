@@ -60,6 +60,7 @@ public class Soumission {
     private static void setAnneeChargeeCatalog() {
         for(CatalogSoum catalog : listCatalogSoum){
             String str = new String(Config.getCatalogDirectory().toString() + System.getProperty("file.separator") + "F" + catalog.getNum() + catalog.getAnnee() + ".dbf");
+            Log.msg(0, "setAnneeChargeeCatalog | " + str);
             if(Files.exists(Paths.get(str)))
             {
                 catalog.setAnneeAffiche(catalog.getAnnee());

@@ -32,10 +32,13 @@ public class ReadSoum {
         List<String> list = getFile().stream()
                 .filter(line -> line.startsWith("G") && line.substring(41,42).equals("1"))
                 .collect(Collectors.toList());
-
-        for(String element : list)
-            catalogSoum.add(new CatalogSoum(element));
         
+        for(String element : list)
+        {
+            System.out.println(element);
+            catalogSoum.add(new CatalogSoum(element));
+        }
+
         Log.msg(0, "getCatalogSoum");
         
         return catalogSoum;        
@@ -126,8 +129,11 @@ public class ReadSoum {
                 .collect(Collectors.toList());
 
         for(String element : listFromFile)
-            quantite = Double.parseDouble(element.substring(45, 59))/1000;
-
+        {
+            if(element.length()>=58)
+                quantite = Double.parseDouble(element.substring(45, 58))/1000;
+        }
+            
         return quantite;
     }    
     

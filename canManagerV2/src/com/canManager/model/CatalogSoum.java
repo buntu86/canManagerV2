@@ -15,7 +15,7 @@ public class CatalogSoum {
     private Path pathDbf=null;
     
     public CatalogSoum(String str){
-        if(str.length()>=8){
+        if(str.length()>=93){
             num = Integer.parseInt(str.substring(1, 4));
             annee = Integer.parseInt(str.substring(5, 7));
             titre = str.substring(92).trim().replaceAll("  +", "");
