@@ -23,6 +23,7 @@ public class ReadSoum {
     
     public static void setPathSoumission(String pathSoum) {
         ReadSoum.pathSoum = Paths.get(pathSoum);
+        ReadSoum.file = null;
         Log.msg(0, "setPathSoumission - " + pathSoum);
     }
 
