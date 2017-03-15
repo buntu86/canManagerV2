@@ -1,7 +1,5 @@
 package com.canManager.view;
 
-import com.canManager.model.Catalog;
-import com.canManager.model.CatalogSoum;
 import com.canManager.model.PosSoum;
 import com.canManager.model.Soumission;
 import java.net.URL;
@@ -43,7 +41,7 @@ public class SoumissionTableController implements Initializable{
         System.out.println("#Catalog:" + Soumission.getCatalogSoumWithIdTab(indexTab).get().getNumTitre());
         System.out.println("#Path:" + Soumission.getCatalogSoumWithIdTab(indexTab).get().getPathDbf().toString());
         for(PosSoum pos : Soumission.getCatalogSoumWithIdTab(indexTab).get().getListPos()){
-            System.out.println(pos.getPos() + "." + pos.getUpos() + "|desc " + pos.getDesc() + "|um " + pos.getUm() + "|Q " + pos.getQuantite());
+            //System.out.println(pos.getPos() + "." + pos.getUpos() + "|desc " + pos.getDesc() + "|um " + pos.getUm() + "|Q " + pos.getQuantite());
         }
         
         table.setItems(Soumission.getCatalogSoumWithIdTab(indexTab).get().getListPos());

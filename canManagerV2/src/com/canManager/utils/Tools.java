@@ -18,4 +18,11 @@ public class Tools {
     public static Stage getPrimaryStage(){
         return main.getPrimaryStage();
     }
+    
+    public static int stringToInteger(String str){
+        if(str!="")
+            return Integer.parseInt(str);
+        else
+            return 0;
+    }
 }

@@ -1,6 +1,6 @@
 package com.canManager.view.dialog;
 
-import com.canManager.model.Soumission;
+import com.canManager.model.CatalogFile;
 import com.canManager.utils.Config;
 import com.canManager.utils.Log;
 import java.nio.file.Files;
@@ -17,12 +17,14 @@ public class SetAnneeChargeeController {
 
     private Stage stage;
     private int numCatalog, annee;
+    private CatalogFile catalogFile = null;
     
     @FXML
     private Label catalogNecLabel;
     
     @FXML
     private ListView listView = new ListView<String>();
+    private int anneeAffiche = 0;
     
     public void ini(Stage anneeChargeeStage, int numCatalog, int annee) {
         this.stage = anneeChargeeStage;
@@ -30,12 +32,15 @@ public class SetAnneeChargeeController {
         this.annee = annee;
         this.catalogNecLabel.setText("F" + numCatalog + "/" + annee);
 
-        ObservableList<String> items = FXCollections.observableArrayList();
+        ObservableList<CatalogFile> items = FXCollections.observableArrayList();
         try(Stream<Path> paths = Files.walk(Config.getCatalogDirectory())) {
             paths.forEach(filePath -> {
                 if (Files.isRegularFile(filePath)) {
                     if(filePath.toString().indexOf("F" + numCatalog)>0 && filePath.toString().toLowerCase().endsWith(".dbf"))
-                        items.add(filePath.getFileName().toString());
+                    {
+                        CatalogFile catalogFile = new CatalogFile(filePath.getParent().toString() + System.getProperty("file.separator") + filePath.getFileName().toString());
+                        items.add(catalogFile);
+                    }
                 }
             });
         }catch(Exception e){
@@ -43,7 +48,6 @@ public class SetAnneeChargeeController {
         }      
 
         listView.setItems(items);        
-        
     }
     
     @FXML
@@ -54,12 +58,12 @@ public class SetAnneeChargeeController {
     @FXML
     private void handleChoice(){
         if(listView.getSelectionModel().getSelectedItem()!=null)
-        {
-            int select = Integer.parseInt(listView.getSelectionModel().getSelectedItem().toString().substring(4, 6));
-            Soumission.getCatalogSoumWithNumCat(numCatalog).get().setAnneeAffiche(select);
-            Soumission.getCatalogSoumWithNumCat(numCatalog).get().setPathDbf(Config.getCatalogDirectory() + System.getProperty("file.separator") + listView.getSelectionModel().getSelectedItem().toString());
-        }
+            catalogFile = (CatalogFile) listView.getSelectionModel().getSelectedItem();
 
         stage.close();
+    }
+    
+    public CatalogFile getCatalogFile(){
+        return catalogFile;
     }
 }

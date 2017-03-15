@@ -3,7 +3,6 @@ package com.canManager.data;
 import com.canManager.model.Catalog;
 import com.canManager.model.PosSoum;
 import com.canManager.model.CatalogSoum;
-import com.canManager.model.Soumission;
 import com.canManager.utils.Log;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -17,7 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 public class ReadSoum {
-    private static Path pathSoum;
+    private static Path pathSoum, pathCatalog;
     private static ArrayList<PosSoum> listPosSoum = new ArrayList<>();
     private static List<String> file = null;
     
@@ -26,6 +25,10 @@ public class ReadSoum {
         ReadSoum.file = null;
         Log.msg(0, "setPathSoumission - " + pathSoum);
     }
+    
+    /*public static void setPathCatalog(String pathCatalog){
+        Catalog.setCatalog(pathCatalog);
+    }*/
 
     public static ArrayList<CatalogSoum> getCatalogSoum() {
         ArrayList<CatalogSoum> catalogSoum = new ArrayList<>();
@@ -36,7 +39,6 @@ public class ReadSoum {
         
         for(String element : list)
         {
-            System.out.println(element);
             catalogSoum.add(new CatalogSoum(element));
         }
 
@@ -45,10 +47,8 @@ public class ReadSoum {
         return catalogSoum;        
     }
 
-    public static ObservableList<PosSoum> getPosSoumCatalog(int num, Path pathDbf){
+    public static ObservableList<PosSoum> getPosSoumCatalog(int num){
         ObservableList<PosSoum> listPosSoum = FXCollections.observableArrayList(); 
-        if(pathDbf!=null && Files.exists(pathDbf))
-            Catalog.setCatalog(pathDbf.toString());
         
         List<String> listPosFromFile = getFile().stream()
                 .filter(line -> line.startsWith("G"+num) && line.substring(41,42).equals("2"))
@@ -69,8 +69,12 @@ public class ReadSoum {
                     .collect(Collectors.toList());
             
             for(String element1 : listPos){
-                //String desc = Catalog.getDescArticle(pos, upos, "00");
-
+                // ################################
+                // ################################
+                //desc = Catalog.getArticle(pos, upos, "00");
+                // ################################
+                // ################################
+            
                 if(element1.length()>92 && !element1.substring(41,42).equals("2"))
                     desc = desc + element1.substring(92, element1.length()) + "\n";
             }

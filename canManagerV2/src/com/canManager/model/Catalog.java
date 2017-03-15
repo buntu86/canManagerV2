@@ -4,7 +4,7 @@ import com.canManager.data.ReadDbf;
 import com.canManager.utils.Log;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Catalog {
     
@@ -12,10 +12,9 @@ public class Catalog {
     private static String title;
     
     public static void setCatalog(String strCatalog) {
-        Log.msg(0, "setCatalog1");
         ReadDbf.setDbfFile(strCatalog);
+        ReadDbf.iniListArticles();
         listArticles = ReadDbf.getListArticles();
-        Log.msg(0, "setCatalog");
         
         setTitle(Paths.get(strCatalog).getFileName().toString());
     }
@@ -79,28 +78,24 @@ public class Catalog {
         return tmpList;
     }
     
-    public static Optional<Articles> getArticle(String pos, String upos, String var){
-        Optional<Articles> artFromStream = null;
-        
-        artFromStream = listArticles
+    public static String getArticle(String pos, String upos, String var){
+        String str = new String();
+
+        ArrayList<Articles> artFromStream = listArticles
                 .stream()
                 .filter(art -> art.getPos().equals(pos) && art.getUpos().equals(upos) && art.getVar().equals(var))
-                .findFirst();
+                .collect(Collectors.toCollection(ArrayList::new));
         
-        return artFromStream;
-    }
-    
-    public static String getDescArticle(String pos, String upos, String var){
-        String artFromStream = "";
-
-        artFromStream = listArticles
-                .stream()
-                .filter(art -> art.getPos().equals(pos) && art.getUpos().equals(upos) && art.getVar().equals(var))
-                .findFirst()
-                .toString();        
+        str = pos  + "." + upos + "." + var;
         
-        return artFromStream;        
-
+        for(Articles tmp : artFromStream)
+        {
+            
+            System.out.println("str => " + tmp.getPos() + tmp.getUpos());
+            str += tmp.getText();
+        }
+        
+        return str;
     }
 
     public static void setTitle(String strCatalog) {

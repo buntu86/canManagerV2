@@ -29,13 +29,19 @@ public class ReadDbf {
         return listArticles;
     }
     
+    public static void iniListArticles(){
+        importListArticlesFromDbf();
+        simplification();        
+    }
+    
     private static void importListArticlesFromDbf()
     {        
-        DbfHeader header = new DbfHeader(dbfFile);           
+        DbfHeader header = new DbfHeader(dbfFile);
         try {
             data = Files.readAllBytes(header.getPathDbfFile());
             s = new String(data, "IBM437");
             start=header.getNumHeader()+1;
+            Log.msg(0, "start" + start);
             
             for(int j=0; j<header.getNumRecordsTable(); j++)
             {                
