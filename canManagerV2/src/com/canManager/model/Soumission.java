@@ -13,7 +13,7 @@ public class Soumission {
     private static int numMandat=0;
     
     public static void setSoumission(String pathSoum){
-        ReadSoum.setPathSoumission(pathSoum);
+        ReadSoum.setFile(pathSoum);
         listCatalogSoum = ReadSoum.getCatalogSoum();        
         numMandat = ReadSoum.getNumMandat();
         nomMandat = ReadSoum.getNomMandat();

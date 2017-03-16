@@ -6,7 +6,6 @@ import com.canManager.model.CatalogSoum;
 import com.canManager.utils.Log;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +15,38 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 public class ReadSoum {
-    private static Path pathSoum, pathCatalog;
     private static ArrayList<PosSoum> listPosSoum = new ArrayList<>();
     private static List<String> file = null;
     
-    public static void setPathSoumission(String pathSoum) {
-        ReadSoum.pathSoum = Paths.get(pathSoum);
+    public static void setFile(String pathSoum){
         ReadSoum.file = null;
-        Log.msg(0, "setPathSoumission - " + pathSoum);
+        try{
+            ReadSoum.file = Files.readAllLines(Paths.get(pathSoum), Charset.forName("IBM437"));
+            Log.msg(0, "setFile() - " + pathSoum);
+            Log.msg(0, "setFile() - " + ReadSoum.file.size() + " lines");
+        }catch(Exception e){
+            Log.msg(1, "Le fichier .01s ne peut-être lu.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Soumission");
+            alert.setHeaderText(null);
+            alert.setContentText("Le fichier \"" + pathSoum + "\" ne peut-être lu.\n" + e.getMessage());
+            alert.showAndWait();  
+        }
+        Log.msg(1, "setFile() fail");
     }
-    
-    /*public static void setPathCatalog(String pathCatalog){
-        Catalog.setCatalog(pathCatalog);
-    }*/
+
+    public static List<String> getRawData(){
+        if(ReadSoum.file==null)
+        {
+            Log.msg(1, "getRawData == null");
+            return null;
+        }
+        else{
+            Log.msg(0, "getRawData - " + ReadSoum.file.size() + " lines");
+            return ReadSoum.file;
+        }
+    }
+
 
     public static ArrayList<CatalogSoum> getCatalogSoum() {
         ArrayList<CatalogSoum> catalogSoum = new ArrayList<>();
@@ -143,24 +161,7 @@ public class ReadSoum {
     }    
     
     private static List<String> getFile() {        
-        if(ReadSoum.file==null)
-            setFile();
         
         return ReadSoum.file;            
-    }
-    
-    public static void setFile(){
-        try{
-            if(ReadSoum.file==null)
-                ReadSoum.file = Files.readAllLines(pathSoum, Charset.forName("IBM437"));
-        }catch(Exception e){
-            Log.msg(1, "Le fichier .01s ne peut-être lu.");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Soumission");
-            alert.setHeaderText(null);
-            alert.setContentText("Le fichier \"" + pathSoum.toString() + "\" ne peut-être lu.\n" + e.getMessage());
-            alert.showAndWait();  
-        }
-        Log.msg(0, "setFile() - " + ReadSoum.file.size() + " lines");
     }
 }
