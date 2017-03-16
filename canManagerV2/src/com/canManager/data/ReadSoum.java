@@ -1,21 +1,13 @@
 package com.canManager.data;
 
-import com.canManager.model.Catalog;
-import com.canManager.model.PosSoum;
-import com.canManager.model.CatalogSoum;
 import com.canManager.utils.Log;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 public class ReadSoum {
-    private static ArrayList<PosSoum> listPosSoum = new ArrayList<>();
     private static List<String> file = null;
     
     public static void setFile(String pathSoum){
@@ -46,24 +38,41 @@ public class ReadSoum {
             return ReadSoum.file;
         }
     }
+    
+    public static int getNumMandat(){
+        String numMandatFromFile = new String();
+        int numMandat=0;
 
+        numMandatFromFile = ReadSoum.file.stream()
+                .filter(line -> line.startsWith("A"))
+                .findFirst()
+                .get();
 
-    public static ArrayList<CatalogSoum> getCatalogSoum() {
-        ArrayList<CatalogSoum> catalogSoum = new ArrayList<>();
+        numMandatFromFile=numMandatFromFile.substring(75, 84).replaceAll(" ", "");
+        if(!numMandatFromFile.isEmpty())
+            numMandat=Integer.parseInt(numMandatFromFile);
 
-        List<String> list = getFile().stream()
-                .filter(line -> line.startsWith("G") && line.substring(41,42).equals("1"))
-                .collect(Collectors.toList());
-        
-        for(String element : list)
-        {
-            catalogSoum.add(new CatalogSoum(element));
-        }
-
-        Log.msg(0, "getCatalogSoum");
-        
-        return catalogSoum;        
+        return numMandat;        
     }
+
+    public static String getNomMandat(){
+        String nomMandatFromFile = new String(), nomMandat = new String();
+        
+        nomMandatFromFile = ReadSoum.file.stream()
+                .filter(line -> line.startsWith("A"))
+                .findFirst()
+                .get();
+
+        nomMandat=nomMandatFromFile.substring(92, 122).trim();
+
+        return nomMandat;        
+    }    
+    
+}
+
+
+/*
+
 
     public static ObservableList<PosSoum> getPosSoumCatalog(int num){
         ObservableList<PosSoum> listPosSoum = FXCollections.observableArrayList(); 
@@ -103,34 +112,7 @@ public class ReadSoum {
         return listPosSoum;
     }    
     
-    public static int getNumMandat(){
-        String numMandatFromFile = new String();
-        int numMandat=0;
 
-        numMandatFromFile = getFile().stream()
-                .filter(line -> line.startsWith("A"))
-                .findFirst()
-                .get();
-
-        numMandatFromFile=numMandatFromFile.substring(75, 84).replaceAll(" ", "");
-        if(!numMandatFromFile.isEmpty())
-            numMandat=Integer.parseInt(numMandatFromFile);
-
-        return numMandat;        
-    }
-
-    public static String getNomMandat(){
-        String nomMandatFromFile = new String(), nomMandat = new String();
-        
-        nomMandatFromFile = getFile().stream()
-                .filter(line -> line.startsWith("A"))
-                .findFirst()
-                .get();
-
-        nomMandat=nomMandatFromFile.substring(92, 122).trim();
-
-        return nomMandat;        
-    }
 
     private static String getUm(int num, String pos, String upos) {
         String um = "";
@@ -163,5 +145,4 @@ public class ReadSoum {
     private static List<String> getFile() {        
         
         return ReadSoum.file;            
-    }
-}
+    }*/

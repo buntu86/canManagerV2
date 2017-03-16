@@ -1,7 +1,6 @@
 package com.canManager.model;
 
 import com.canManager.data.ReadDbf;
-import com.canManager.utils.Log;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Collectors;

@@ -38,13 +38,13 @@ public class SoumissionTableController implements Initializable{
     
     public void ini(int index) {
         this.indexTab = index;
-        System.out.println("#Catalog:" + Soumission.getCatalogSoumWithIdTab(indexTab).get().getNumTitre());
+        /*System.out.println("#Catalog:" + Soumission.getCatalogSoumWithIdTab(indexTab).get().getNumTitre());
         System.out.println("#Path:" + Soumission.getCatalogSoumWithIdTab(indexTab).get().getPathDbf().toString());
         for(PosSoum pos : Soumission.getCatalogSoumWithIdTab(indexTab).get().getListPos()){
             //System.out.println(pos.getPos() + "." + pos.getUpos() + "|desc " + pos.getDesc() + "|um " + pos.getUm() + "|Q " + pos.getQuantite());
         }
         
-        table.setItems(Soumission.getCatalogSoumWithIdTab(indexTab).get().getListPos());
+        table.setItems(Soumission.getCatalogSoumWithIdTab(indexTab).get().getListPos());*/
     }
 }
 

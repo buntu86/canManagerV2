@@ -23,7 +23,7 @@ public class SoumissionController {
         Tools.setTitlePrimaryStage(Soumission.getTitle());
         int i=0;
         
-        for(CatalogSoum catalog:Soumission.getAllCatalogSoum())
+        /*for(CatalogSoum catalog:Soumission.getAllCatalogSoum())
         {
             String strCatalog = new String(catalog.getNumTitre());
             if(strCatalog.length()>15)
@@ -36,7 +36,7 @@ public class SoumissionController {
             
             if(catalog.getAnneeAffiche()==0)
                 rootTabPane.getTabs().get(catalog.getIdTab()).setDisable(true);
-        }  
+        } */ 
         updateViewer();
         
         //Listener change tab
@@ -47,7 +47,7 @@ public class SoumissionController {
     
     private void updateViewer(){
         int idTab=rootTabPane.getSelectionModel().getSelectedIndex();
-        CatalogSoum catalog = Soumission.getCatalogSoumWithIdTab(idTab).get();
+        /*CatalogSoum catalog = Soumission.getCatalogSoumWithIdTab(idTab).get();
 
         if(!rootTabPane.getSelectionModel().getSelectedItem().isDisable())
         {            
@@ -66,7 +66,7 @@ public class SoumissionController {
             catch(IOException e){
                 Log.msg(1, "Erreur file SoumissionTable.fxml" + e.getMessage());
             }
-        }        
+        } */       
     }
 }
 

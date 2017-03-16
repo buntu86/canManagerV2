@@ -8,13 +8,12 @@ import java.util.Optional;
 
 public class Soumission {
 
-    private static ArrayList<CatalogSoum> listCatalogSoum = new ArrayList<>();
     private static String nomMandat="";
     private static int numMandat=0;
     
     public static void setSoumission(String pathSoum){
         ReadSoum.setFile(pathSoum);
-        listCatalogSoum = ReadSoum.getCatalogSoum();        
+        ListCatalogSoum listCatalogSoum = new ListCatalogSoum();        
         numMandat = ReadSoum.getNumMandat();
         nomMandat = ReadSoum.getNomMandat();
         Log.msg(0, "iniCatalogSoumission");
@@ -24,7 +23,7 @@ public class Soumission {
         return numMandat + " " + nomMandat;
     }
     
-    public static ArrayList<CatalogSoum> getAllCatalogSoum(){
+    /*public static ArrayList<CatalogSoum> getAllCatalogSoum(){
         return listCatalogSoum;
     }
 
@@ -40,5 +39,5 @@ public class Soumission {
                 .stream()
                 .filter(catalog -> catalog.getNum()==numCatalog)
                 .findFirst();
-    }    
+    }    */
 }

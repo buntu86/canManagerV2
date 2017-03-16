@@ -35,7 +35,7 @@ public class CatalogSoum {
             annee = Integer.parseInt(str.substring(5, 7));
             setAnneeChargeeCatalog();
             titre = str.substring(92).trim().replaceAll("  +", "");
-            listPosSoum = ReadSoum.getPosSoumCatalog(num);
+            //listPosSoum = ReadSoum.getPosSoumCatalog(num);
         }
         else
         {
