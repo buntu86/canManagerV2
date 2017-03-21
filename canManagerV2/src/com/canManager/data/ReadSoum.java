@@ -23,8 +23,8 @@ public class ReadSoum {
             alert.setHeaderText(null);
             alert.setContentText("Le fichier \"" + pathSoum + "\" ne peut-être lu.\n" + e.getMessage());
             alert.showAndWait();  
+            Log.msg(1, "setFile() fail");
         }
-        Log.msg(1, "setFile() fail");
     }
 
     public static List<String> getRawData(){
@@ -38,36 +38,6 @@ public class ReadSoum {
             return ReadSoum.file;
         }
     }
-    
-    public static int getNumMandat(){
-        String numMandatFromFile = new String();
-        int numMandat=0;
-
-        numMandatFromFile = ReadSoum.file.stream()
-                .filter(line -> line.startsWith("A"))
-                .findFirst()
-                .get();
-
-        numMandatFromFile=numMandatFromFile.substring(75, 84).replaceAll(" ", "");
-        if(!numMandatFromFile.isEmpty())
-            numMandat=Integer.parseInt(numMandatFromFile);
-
-        return numMandat;        
-    }
-
-    public static String getNomMandat(){
-        String nomMandatFromFile = new String(), nomMandat = new String();
-        
-        nomMandatFromFile = ReadSoum.file.stream()
-                .filter(line -> line.startsWith("A"))
-                .findFirst()
-                .get();
-
-        nomMandat=nomMandatFromFile.substring(92, 122).trim();
-
-        return nomMandat;        
-    }    
-    
 }
 
 

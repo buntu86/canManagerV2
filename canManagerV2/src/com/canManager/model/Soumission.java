@@ -5,7 +5,6 @@ import com.canManager.utils.Log;
 import java.util.ArrayList;
 import java.util.Optional;
 
-
 public class Soumission {
 
     private static String nomMandat="";
@@ -14,14 +13,43 @@ public class Soumission {
     public static void setSoumission(String pathSoum){
         ReadSoum.setFile(pathSoum);
         ListCatalogSoum listCatalogSoum = new ListCatalogSoum();        
-        numMandat = ReadSoum.getNumMandat();
-        nomMandat = ReadSoum.getNomMandat();
+        numMandat = getNumMandat();
+        nomMandat = getNomMandat();
         Log.msg(0, "iniCatalogSoumission");
     }
 
     public static String getTitle() {
         return numMandat + " " + nomMandat;
     }
+    
+    public static int getNumMandat(){
+        String numMandatFromFile = new String();
+        int numMandat=0;
+
+        numMandatFromFile = ReadSoum.getRawData().stream()
+                .filter(line -> line.startsWith("A"))
+                .findFirst()
+                .get();
+
+        numMandatFromFile=numMandatFromFile.substring(75, 84).replaceAll(" ", "");
+        if(!numMandatFromFile.isEmpty())
+            numMandat=Integer.parseInt(numMandatFromFile);
+
+        return numMandat;        
+    }
+
+    public static String getNomMandat(){
+        String nomMandatFromFile = new String(), nomMandat = new String();
+        
+        nomMandatFromFile = ReadSoum.getRawData().stream()
+                .filter(line -> line.startsWith("A"))
+                .findFirst()
+                .get();
+
+        nomMandat=nomMandatFromFile.substring(92, 122).trim();
+
+        return nomMandat;        
+    }  
     
     /*public static ArrayList<CatalogSoum> getAllCatalogSoum(){
         return listCatalogSoum;

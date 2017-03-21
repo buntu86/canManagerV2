@@ -29,13 +29,17 @@ public class CatalogSoum {
     private CatalogFile catalogFile = null;
     
     public CatalogSoum(String str){
-
         if(str.length()>=93){
             num = Integer.parseInt(str.substring(1, 4));
             annee = Integer.parseInt(str.substring(5, 7));
-            setAnneeChargeeCatalog();
             titre = str.substring(92).trim().replaceAll("  +", "");
-            //listPosSoum = ReadSoum.getPosSoumCatalog(num);
+
+            Log.msg(0, num + " " + annee + " " + titre);
+
+            setAnneeChargeeCatalog();
+            
+            /*
+            //listPosSoum = ReadSoum.getPosSoumCatalog(num);*/
         }
         else
         {
@@ -54,7 +58,7 @@ public class CatalogSoum {
     public void setIdTab(int i) {
         this.idTab = i;
     }    
-    public void setPathDbf(String str){
+    public void setPath(String str){
         this.pathDbf = Paths.get(str);
     }
     
@@ -99,12 +103,16 @@ public class CatalogSoum {
         Log.msg(0, "setAnneeChargeeCatalog | " + str);
         if(Files.exists(Paths.get(str)))
         {
-            catalogFile.setPath(str);
-            this.anneeChargee=this.annee;
+            Log.msg(0, str + " existe");
+            this.setPath(str);
+            this.anneeChargee = this.annee;
         }
 
         else
+        {
+            Log.msg(0, str + " n'existe pas.");
             showSetAnneeChargeeDialog();
+        }
     }
 
     private void showSetAnneeChargeeDialog() {
