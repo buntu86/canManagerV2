@@ -14,7 +14,7 @@ public class ListCatalogSoum {
                 .filter(line -> line.startsWith("G") && line.substring(41,42).equals("1"))
                 .collect(Collectors.toList());
         
-        Log.msg(0, "ListCatalogSoum - constructor");
+        Log.msg(0, "constructor : nbrCatalog " + list.size());
         for(String element : list)
         {
             catalogSoum.add(new CatalogSoum(element));

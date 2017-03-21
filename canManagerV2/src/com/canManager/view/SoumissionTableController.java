@@ -30,10 +30,10 @@ public class SoumissionTableController implements Initializable{
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        articleColumn.setCellValueFactory(cellData -> cellData.getValue().articleProperty());
+        /*articleColumn.setCellValueFactory(cellData -> cellData.getValue().articleProperty());
         descColumn.setCellValueFactory(cellData -> cellData.getValue().descProperty());
         quantiteColumn.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty());
-        umColumn.setCellValueFactory(cellData -> cellData.getValue().umProperty());
+        umColumn.setCellValueFactory(cellData -> cellData.getValue().umProperty());*/
     }    
     
     public void ini(int index) {

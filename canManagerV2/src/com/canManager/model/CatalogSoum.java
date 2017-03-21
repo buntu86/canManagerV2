@@ -22,11 +22,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class CatalogSoum {
-    private int num, annee, anneeChargee, idTab;
+    private int num, annee, idTab;
     private String titre;
-    private ObservableList<PosSoum> listPosSoum = FXCollections.observableArrayList();
-    private Path pathDbf=null;
-    private CatalogFile catalogFile = null;
+    private ListPositionsSoum listPositionsSoum;
+    private CatalogFile catalogFile = new CatalogFile();
     
     public CatalogSoum(String str){
         if(str.length()>=93){
@@ -37,9 +36,8 @@ public class CatalogSoum {
             Log.msg(0, num + " " + annee + " " + titre);
 
             setAnneeChargeeCatalog();
-            
-            /*
-            //listPosSoum = ReadSoum.getPosSoumCatalog(num);*/
+                       
+            listPositionsSoum = new ListPositionsSoum(catalogFile);
         }
         else
         {
@@ -52,15 +50,9 @@ public class CatalogSoum {
         }
     }
     
-    public void setAnneeAffiche(int annee){
-        this.anneeChargee = annee;
-    }
     public void setIdTab(int i) {
         this.idTab = i;
     }    
-    public void setPath(String str){
-        this.pathDbf = Paths.get(str);
-    }
     
     public String getNumTitre(){
         return num + " - " + titre;
@@ -83,29 +75,19 @@ public class CatalogSoum {
     }
 
     public int getAnneeAffiche() {
-        return anneeChargee;
+        return catalogFile.getAnnee();
     }
 
     public Path getPathDbf(){
-        if(catalogFile!=null)
-            return catalogFile.getPath();
-        else
-            return null;
-    }
-    
-    
-    public ObservableList<PosSoum> getListPos() {
-        return listPosSoum;
+        return catalogFile.getPath();
     }
     
     private void setAnneeChargeeCatalog() {
         String str = new String(Config.getCatalogDirectory().toString() + System.getProperty("file.separator") + "F" + this.num + this.annee + ".dbf");
-        Log.msg(0, "setAnneeChargeeCatalog | " + str);
         if(Files.exists(Paths.get(str)))
         {
             Log.msg(0, str + " existe");
-            this.setPath(str);
-            this.anneeChargee = this.annee;
+            catalogFile.setPath(str);
         }
 
         else
@@ -137,7 +119,6 @@ public class CatalogSoum {
             });            
             
             anneeChargeeStage.showAndWait();
-            
             catalogFile = controller.getCatalogFile();
             
         } catch (IOException e) {

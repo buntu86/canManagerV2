@@ -2,19 +2,18 @@ package com.canManager.model;
 
 import com.canManager.data.ReadSoum;
 import com.canManager.utils.Log;
-import java.util.ArrayList;
-import java.util.Optional;
 
 public class Soumission {
 
     private static String nomMandat="";
     private static int numMandat=0;
+    private static ListCatalogSoum listCatalogSoum;
     
     public static void setSoumission(String pathSoum){
         ReadSoum.setFile(pathSoum);
-        ListCatalogSoum listCatalogSoum = new ListCatalogSoum();        
         numMandat = getNumMandat();
         nomMandat = getNomMandat();
+        listCatalogSoum = new ListCatalogSoum();        
         Log.msg(0, "iniCatalogSoumission");
     }
 
@@ -35,6 +34,8 @@ public class Soumission {
         if(!numMandatFromFile.isEmpty())
             numMandat=Integer.parseInt(numMandatFromFile);
 
+        Log.msg(0, "getNumMandat " + numMandat);
+        
         return numMandat;        
     }
 
@@ -48,14 +49,16 @@ public class Soumission {
 
         nomMandat=nomMandatFromFile.substring(92, 122).trim();
 
+        Log.msg(0, "getNomMandat " + nomMandat);
+
         return nomMandat;        
-    }  
+    }
     
-    /*public static ArrayList<CatalogSoum> getAllCatalogSoum(){
+    public static ListCatalogSoum getListCatalogSoum(){
         return listCatalogSoum;
     }
 
-    public static Optional<CatalogSoum> getCatalogSoumWithIdTab(int idTab) {
+    /*public static Optional<CatalogSoum> getCatalogSoumWithIdTab(int idTab) {
          return listCatalogSoum
                 .stream()
                 .filter(catalog -> catalog.getIdTab()==idTab)

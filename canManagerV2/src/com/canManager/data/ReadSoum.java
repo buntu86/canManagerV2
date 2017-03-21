@@ -34,83 +34,15 @@ public class ReadSoum {
             return null;
         }
         else{
-            Log.msg(0, "getRawData - " + ReadSoum.file.size() + " lines");
             return ReadSoum.file;
         }
     }
 }
 
 
-/*
+/*  
 
 
-    public static ObservableList<PosSoum> getPosSoumCatalog(int num){
-        ObservableList<PosSoum> listPosSoum = FXCollections.observableArrayList(); 
-        
-        List<String> listPosFromFile = getFile().stream()
-                .filter(line -> line.startsWith("G"+num) && line.substring(41,42).equals("2"))
-                .collect(Collectors.toList());
-
-        for(String element : listPosFromFile)
-        {
-            String pos = element.substring(7, 10);
-            String upos = element.substring(10, 13);
-            
-            String um = getUm(num, pos, upos);
-            double quantite = getQuantite(num, pos, upos);
-            
-
-            String desc = new String();
-            List<String> listPos = getFile().stream()
-                    .filter(line -> line.startsWith("G"+num+"   "+pos+upos) && (line.substring(41,42).equals("2") || line.substring(41,42).equals("3")))
-                    .collect(Collectors.toList());
-            
-            for(String element1 : listPos){
-                // ################################
-                // ################################
-                //desc = Catalog.getArticle(pos, upos, "00");
-                // ################################
-                // ################################
-            
-                if(element1.length()>92 && !element1.substring(41,42).equals("2"))
-                    desc = desc + element1.substring(92, element1.length()) + "\n";
-            }
-            
-            listPosSoum.add(new PosSoum(pos, upos, desc, um, quantite));
-        }
-   
-        return listPosSoum;
-    }    
-    
-
-
-    private static String getUm(int num, String pos, String upos) {
-        String um = "";
-        
-        List<String> listFromFile = getFile().stream()
-                .filter(line -> line.startsWith("G" + num + "   " + pos + upos) && line.substring(41,42).equals("5"))
-                .collect(Collectors.toList());
-
-        for(String element : listFromFile)
-            um = element.substring(58, element.length());
-
-        return um;
-    }    
-
-    private static double getQuantite(int num, String pos, String upos) {
-        double quantite = 0;
-        List<String> listFromFile = getFile().stream()
-                .filter(line -> line.startsWith("G" + num + "   " + pos + upos) && line.substring(41,42).equals("6"))
-                .collect(Collectors.toList());
-
-        for(String element : listFromFile)
-        {
-            if(element.length()>=58)
-                quantite = Double.parseDouble(element.substring(45, 58))/1000;
-        }
-            
-        return quantite;
-    }    
     
     private static List<String> getFile() {        
         
