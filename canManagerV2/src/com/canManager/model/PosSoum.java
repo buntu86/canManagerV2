@@ -8,10 +8,9 @@ import java.util.stream.Collectors;
 
 public class PosSoum {
     private double quantite=0, prix=0, montant=0;
-    //private StringProperty pos, upos, desc, um, article;
     private int pos=0, upos=0;
-    private String um = "";
-    private CatalogFile catFile;
+    private String um = "", desc = "";
+    private CatalogFile catFile = new CatalogFile();
     
     public PosSoum(String str, CatalogFile catFile){
         this.catFile = catFile;
@@ -19,12 +18,12 @@ public class PosSoum {
         if(str.length()>=42){
             this.pos = Tools.stringToInteger(str.substring(7, 10));
             this.upos = Tools.stringToInteger(str.substring(10, 13));
+            setUm(); 
+            setQuantite();    
+            //setDesc();
         }
-
-        setUm(); 
-        setQuantite();    
         
-        Log.msg(0, catFile.getNum() + " " + catFile.getAnnee() + "|" + pos + "." + upos + " " + "um." + um + "Q " + quantite);
+        Log.msg(0, catFile.getNum() + " " + catFile.getAnnee() + " | " + pos + "." + upos + " | um " + um + " | Q " + quantite);
     }
     
     ///// try findFirst!!!!!!
@@ -34,9 +33,24 @@ public class PosSoum {
                 .collect(Collectors.toList());
 
         for(String element : list)
+        {
+            if(element.length()>=58)
+                um = element.substring(58, element.length());
+        }
+        
+        return this.um;        
+
+        /*String element = ReadSoum.getRawData().stream()
+                .filter(line -> line.startsWith("G" + this.catFile.getNum() + "   " + this.pos + this.upos) && line.substring(41,42).equals("5"))
+                .findFirst()
+                .get();
+        
+        Log.msg(0, "element " + element.length());
+        
+        if(element.length()>=58)
             um = element.substring(58, element.length());
 
-        return this.um;
+        return this.um;*/
     }   
     
 
