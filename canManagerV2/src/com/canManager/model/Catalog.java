@@ -77,21 +77,23 @@ public class Catalog {
         return tmpList;
     }
     
-    public static String getArticle(String pos, String upos, String var){
+    public static String getArticle(int pos, int upos, int var){
         String str = new String();
+        int loop = 1;
 
         ArrayList<Articles> artFromStream = listArticles
                 .stream()
-                .filter(art -> art.getPos().equals(pos) && art.getUpos().equals(upos) && art.getVar().equals(var))
+                .filter(art -> art.getPos().equals(String.format("%03d", pos)) && art.getUpos().equals(String.format("%03d", upos)) && art.getVar().equals(String.format("%02d", var)))
                 .collect(Collectors.toCollection(ArrayList::new));
-        
-        str = pos  + "." + upos + "." + var;
         
         for(Articles tmp : artFromStream)
         {
-            
-            System.out.println("str => " + tmp.getPos() + tmp.getUpos());
-            str += tmp.getText();
+            if(artFromStream.size()==loop && tmp.getBegin()>0)
+                str += tmp.getText().substring(0, tmp.getBegin()-1);
+            else
+                str += tmp.getText();
+                
+            loop++;
         }
         
         return str;

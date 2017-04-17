@@ -23,20 +23,20 @@ public class SoumissionController {
         Tools.setTitlePrimaryStage(Soumission.getTitle());
         int i=0;
         
-        /*for(CatalogSoum catalog:Soumission.getAllCatalogSoum())
-        {
-            String strCatalog = new String(catalog.getNumTitre());
+        for(CatalogSoum catalogSoum : Soumission.getListCatalogSoum()){
+            String strCatalog = new String(catalogSoum.getNumTitre());
             if(strCatalog.length()>15)
                 strCatalog = strCatalog.substring(0, 15)+"..";
             
-            catalog.setIdTab(i);
+            catalogSoum.setIdTab(i);
             i++;
-            
+
             rootTabPane.getTabs().add(new Tab(strCatalog));  
-            
-            if(catalog.getAnneeAffiche()==0)
-                rootTabPane.getTabs().get(catalog.getIdTab()).setDisable(true);
-        } */ 
+
+            if(catalogSoum.getCharge()==0)
+                rootTabPane.getTabs().get(catalogSoum.getIdTab()).setDisable(true);
+        }
+        
         updateViewer();
         
         //Listener change tab
@@ -47,7 +47,8 @@ public class SoumissionController {
     
     private void updateViewer(){
         int idTab=rootTabPane.getSelectionModel().getSelectedIndex();
-        /*CatalogSoum catalog = Soumission.getCatalogSoumWithIdTab(idTab).get();
+        
+        CatalogSoum catalogSoum = Soumission.getCatalogSoumWithIdTab(idTab).get();
 
         if(!rootTabPane.getSelectionModel().getSelectedItem().isDisable())
         {            
@@ -66,7 +67,9 @@ public class SoumissionController {
             catch(IOException e){
                 Log.msg(1, "Erreur file SoumissionTable.fxml" + e.getMessage());
             }
-        } */       
+        }         
+        
+        Log.msg(0, "updateViewer -> " + catalogSoum.getNumTitre());
     }
 }
 

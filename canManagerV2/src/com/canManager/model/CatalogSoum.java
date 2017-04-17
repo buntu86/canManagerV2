@@ -10,8 +10,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,9 +23,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class CatalogSoum {
-    private int num, annee, idTab;
+    private int num, annee, idTab, charge;
     private String titre;
-    private ListPositionsSoum listPositionsSoum;
+    private static ArrayList<PosSoum> listPosSoum = new ArrayList<>();    
     private CatalogFile catalogFile = new CatalogFile();
     
     public CatalogSoum(String str){
@@ -36,8 +37,8 @@ public class CatalogSoum {
             Log.msg(0, num + " " + annee + " " + titre);
 
             setAnneeChargeeCatalog();
-                       
-            listPositionsSoum = new ListPositionsSoum(catalogFile);
+            setListPositionsSoum();
+
         }
         else
         {
@@ -88,6 +89,7 @@ public class CatalogSoum {
         {
             Log.msg(0, str + " existe");
             catalogFile.setPath(str);
+            charge = 1;
         }
 
         else
@@ -120,9 +122,33 @@ public class CatalogSoum {
             
             anneeChargeeStage.showAndWait();
             catalogFile = controller.getCatalogFile();
+            charge = controller.getCharge();
             
         } catch (IOException e) {
         e.printStackTrace();
         }        
     }    
+
+    public int getCharge() {
+        return charge;
+    }
+    
+    public ArrayList<PosSoum> getListPositionSoum(){
+        return listPosSoum;
+    }
+
+    private void setListPositionsSoum() {
+        if(catalogFile!=null){
+            Catalog.setCatalog(catalogFile.getPath().toString());
+            List<String> list = ReadSoum.getRawData().stream()
+                    .filter(line -> line.startsWith("G"+catalogFile.getNum()) && line.substring(41,42).equals("2"))
+                    .collect(Collectors.toList());
+
+            for(String element : list)
+            {
+                listPosSoum.add(new PosSoum(element, catalogFile));
+            }
+            Log.msg(0, "constructor " + catalogFile.getNum() + "." + catalogFile.getAnnee() + " : nbrPositions | " + list.size());
+        }        
+    }
 }

@@ -5,12 +5,15 @@ import com.canManager.utils.Log;
 import com.canManager.utils.Tools;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class PosSoum {
     private double quantite=0, prix=0, montant=0;
-    private int pos=0, upos=0;
+    private int pos=0, upos=0, var=0;
     private String um = "", desc = "";
     private CatalogFile catFile = new CatalogFile();
+    private final SimpleStringProperty article;
     
     public PosSoum(String str, CatalogFile catFile){
         this.catFile = catFile;
@@ -20,14 +23,18 @@ public class PosSoum {
             this.upos = Tools.stringToInteger(str.substring(10, 13));
             setUm(); 
             setQuantite();    
-            //setDesc();
+            setDesc();
         }
+
+        this.article = new SimpleStringProperty(String.format("%03d", pos) + "." + String.format("%03d", upos));
+
         
-        Log.msg(0, catFile.getNum() + " " + catFile.getAnnee() + " | " + pos + "." + upos + " | um " + um + " | Q " + quantite);
+        Log.msg(0, catFile.getNum() + " " + catFile.getAnnee() + " | " + String.format("%03d", pos) + "." + String.format("%03d", upos) + " " + String.format("%02d", var) + " | um " + um + " | Q " + quantite + " | desc " + desc);
     }
     
+    //SET
     ///// try findFirst!!!!!!
-    private String setUm() {
+    private void setUm() {
         List<String> list = ReadSoum.getRawData().stream()
                 .filter(line -> line.startsWith("G" + this.catFile.getNum() + "   " + this.pos + this.upos) && line.substring(41,42).equals("5"))
                 .collect(Collectors.toList());
@@ -37,25 +44,11 @@ public class PosSoum {
             if(element.length()>=58)
                 um = element.substring(58, element.length());
         }
-        
-        return this.um;        
-
-        /*String element = ReadSoum.getRawData().stream()
-                .filter(line -> line.startsWith("G" + this.catFile.getNum() + "   " + this.pos + this.upos) && line.substring(41,42).equals("5"))
-                .findFirst()
-                .get();
-        
-        Log.msg(0, "element " + element.length());
-        
-        if(element.length()>=58)
-            um = element.substring(58, element.length());
-
-        return this.um;*/
     }   
     
 
     ///// try findFirst!!!!!!
-    private double setQuantite() {
+    private void setQuantite() {
         List<String> list = ReadSoum.getRawData().stream()
                 .filter(line -> line.startsWith("G" + this.catFile.getNum() + "   " + pos + upos) && line.substring(41,42).equals("6"))
                 .collect(Collectors.toList());
@@ -65,85 +58,73 @@ public class PosSoum {
             if(element.length()>=58)
                 quantite = Double.parseDouble(element.substring(45, 58))/1000;
         }
-            
-        return quantite;
     }    
 
-    
-    /*
-        String desc = new String();
-        List<String> listPos = getFile().stream()
-                .filter(line -> line.startsWith("G"+num+"   "+pos+upos) && (line.substring(41,42).equals("2") || line.substring(41,42).equals("3")))
-                .collect(Collectors.toList());
+    private void setDesc(){
+        int lastVar=0;
+        
+        List<String> listPos = ReadSoum.getRawData().stream()
+                .filter(line -> line.startsWith("G" + this.catFile.getNum() + "   " + pos + upos) && (line.substring(41,42).equals("2") || line.substring(41,42).equals("3")))
+                .collect(Collectors.toList());        
+        
+        if(listPos.size()>1){
+            //Line 0 == 2
+            listPos.remove(0);
+            String tmp = "";
+            int firstLoop=1;
+            
+            for(String element : listPos){
+                int varTmp = 0;
 
-        for(String element1 : listPos){
-            // ################################
-            // ################################
-            //desc = Catalog.getArticle(pos, upos, "00");
-            // ################################
-            // ################################
+                if(element.length()>=15);
+                    varTmp = Tools.stringToInteger(element.substring(13,15));
 
-            if(element1.length()>92 && !element1.substring(41,42).equals("2"))
-                desc = desc + element1.substring(92, element1.length()) + "\n";
+                if(lastVar!=varTmp)
+                {
+                    lastVar=varTmp;                   
+                    if(firstLoop!=1)
+                    {
+                        firstLoop=0;
+                        
+                        if(element.length()>=57)
+                            tmp += element.substring(57).trim();
+
+                        tmp += Catalog.getArticle(pos, upos, lastVar);
+                        
+                        tmp += "\n";
+                    }
+                    else
+                    {
+                        tmp += Catalog.getArticle(pos, upos, lastVar);
+                        
+                        if(element.length()>=57)
+                            tmp += element.substring(57).trim();
+                        
+                        tmp += "\n";
+                    }                        
+                }
+                else
+                {
+                    firstLoop=1;
+                    if(element.length()>=57)
+                        tmp += element.substring(57).trim() + "\n";                
+                }
+            }   
+            
+            desc = tmp.trim();           
         }
 
-*/    
-    /*
-    public PosSoum(String pos, String upos, String desc, String um, double quantite){
-        this.article = new SimpleStringProperty();
-        this.pos = new SimpleStringProperty(pos);
-        this.upos = new SimpleStringProperty(upos);
-        this.desc = new SimpleStringProperty(desc);
-        this.um = new SimpleStringProperty(um);
-        this.quantite = quantite;
-    }
- 
-    public String getPos(){
-        return this.pos.get();
-    }
-    public StringProperty articleProperty() {     
-        return new SimpleStringProperty(this.pos.get() + "." + this.upos.get());
-    }        
+        else            
+            desc = Catalog.getArticle(pos, upos, var);
+    }     
     
-    public String getUpos(){
-        return this.upos.get();
-    }
-    
-    public String getDesc(){
-        return this.desc.get();
-    }
-    public StringProperty descProperty() {     
-        return this.desc;
-    }            
-    
-    public String getUm(){
-        return this.um.get();
-    }
-    public StringProperty umProperty() {     
-        return this.um;
+    //PROPERTY
+    public StringProperty articleProperty() {
+        return article;
     }    
     
-    public double getQuantite(){
-        return this.quantite;
+    //GET
+    public String getArticle(){
+        return article.get();
     }
-    public StringProperty quantiteProperty() {     
-        return new SimpleStringProperty(Double.toString(quantite));
-    }        
-    
-    public double getPrix(){
-        return this.prix;
-    }
-    
-    public double getMontant(){       
-        if(quantite>0 && prix>0)
-            montant = quantite*prix;
-
-        return montant;
-    }
-    
-    public void setDesc(String str){
-        this.desc = new SimpleStringProperty(str);
-    }
-    
-*/   
 }

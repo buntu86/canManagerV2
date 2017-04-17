@@ -13,6 +13,7 @@ public class ListPositionsSoum {
     ListPositionsSoum(CatalogFile catFile) {
         
         if(catFile!=null){
+            Catalog.setCatalog(catFile.getPath().toString());
             list = ReadSoum.getRawData().stream()
                     .filter(line -> line.startsWith("G"+catFile.getNum()) && line.substring(41,42).equals("2"))
                     .collect(Collectors.toList());

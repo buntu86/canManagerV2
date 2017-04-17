@@ -1,4 +1,4 @@
-package com.canManager.model;
+/*package com.canManager.model;
 
 import com.canManager.data.ReadSoum;
 import com.canManager.utils.Log;
@@ -26,3 +26,4 @@ public class ListCatalogSoum {
         return catalogSoum;
     }
 }
+*/

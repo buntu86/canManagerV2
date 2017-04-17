@@ -8,6 +8,7 @@ public class Tools {
     
     public static void setTitlePrimaryStage(String str){
         main.setTitlePrimaryStage(str);
+        Log.msg(0, "setTitle");
     }
 
     public static void setMain(MainApp main) {

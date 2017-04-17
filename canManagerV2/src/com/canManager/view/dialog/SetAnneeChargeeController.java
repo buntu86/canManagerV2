@@ -25,6 +25,7 @@ public class SetAnneeChargeeController {
     
     @FXML
     private ListView listView = new ListView<String>();
+    private int charge = 0;
     
     public void ini(Stage stage, int numCatalog, int annee) {
 
@@ -57,17 +58,25 @@ public class SetAnneeChargeeController {
     @FXML
     private void handleCancel(){
         this.stage.close();
+        
     }
     
     @FXML
     private void handleChoice(){
         if(listView.getSelectionModel().getSelectedItem()!=null)
+        {
             this.catalogFile = (CatalogFile) listView.getSelectionModel().getSelectedItem();
+            this.charge = 1;
+        }
 
         this.stage.close();
     }
 
     public CatalogFile getCatalogFile() {
         return this.catalogFile;
+    }
+
+    public int getCharge() {
+        return this.charge;
     }
 }
