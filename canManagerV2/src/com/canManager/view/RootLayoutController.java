@@ -4,12 +4,19 @@ import com.canManager.MainApp;
 import com.canManager.utils.Config;
 import com.canManager.utils.Log;
 import com.canManager.utils.Tools;
+import com.canManager.view.dialog.ConfigController;
 import java.io.File;
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class RootLayoutController {
     private AnchorPane catalogLayout, soumissionLayout; 
@@ -113,6 +120,40 @@ public class RootLayoutController {
         } catch (Exception e) {
             Log.msg(1, "showSoumission | " + e.getMessage());
         }
-    }    
+    }   
+    
+    //// EDITION ////
+    @FXML
+    public void showConfigDialog(){        
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("/com/canManager/view/dialog/Config.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            
+            Stage configStage = new Stage();
+            configStage.setTitle("Configuration");
+            configStage.initModality(Modality.WINDOW_MODAL);
+            configStage.initOwner(Tools.getPrimaryStage());
+            Scene scene = new Scene(page);
+            configStage.setScene(scene);
+            
+            ConfigController controller = loader.getController();
+            controller.ini(configStage);
+            
+            configStage.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent t) -> {
+                if(t.getCode()==KeyCode.ESCAPE)
+                {
+                    configStage.close();
+                    Log.msg(0, "Dialog config : esc");
+                }
+            });            
+            
+            configStage.showAndWait();            
+        } catch (IOException e) {
+        e.printStackTrace();
+        }     
+    }   
+    
+    
 
 }

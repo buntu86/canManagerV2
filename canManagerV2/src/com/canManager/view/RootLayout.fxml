@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="700.0" maxWidth="600.0" minHeight="700.0" minWidth="600.0" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.canManager.view.RootLayoutController">
+<BorderPane maxHeight="700.0" maxWidth="600.0" minHeight="700.0" minWidth="600.0" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.canManager.view.RootLayoutController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -17,6 +17,11 @@
                   <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Quitter" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Edition">
+               <items>
+                <MenuItem mnemonicParsing="false" onAction="#showConfigDialog" text="Préférence" />
+               </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Catalogue">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleOpenCatalog" text="Ouvrir catalogue" />
@@ -37,7 +42,7 @@
         </menus>
       </MenuBar>
    </top>
-   <center>
+   <left>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-   </center>
+   </left>
 </BorderPane>
