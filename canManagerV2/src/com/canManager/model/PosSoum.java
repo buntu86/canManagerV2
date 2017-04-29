@@ -1,19 +1,23 @@
 package com.canManager.model;
 
 import com.canManager.data.ReadSoum;
-import com.canManager.utils.Log;
 import com.canManager.utils.Tools;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class PosSoum {
-    private double quantite=0, prix=0, montant=0;
+    private double prix=0, montant=0;
     private int pos=0, upos=0, var=0;
-    private String um = "", desc = "";
     private CatalogFile catFile = new CatalogFile();
-    private final SimpleStringProperty article;
+    private SimpleStringProperty 
+            article = new SimpleStringProperty(""), 
+            desc = new SimpleStringProperty(""), 
+            um = new SimpleStringProperty(""),
+            quantite = new SimpleStringProperty("");
     
     public PosSoum(String str, CatalogFile catFile){
         this.catFile = catFile;
@@ -21,15 +25,15 @@ public class PosSoum {
         if(str.length()>=42){
             this.pos = Tools.stringToInteger(str.substring(7, 10));
             this.upos = Tools.stringToInteger(str.substring(10, 13));
+            this.article = new SimpleStringProperty(String.format("%03d", pos) + "." + String.format("%03d", upos));
+
             setUm(); 
             setQuantite();    
             setDesc();
         }
 
-        this.article = new SimpleStringProperty(String.format("%03d", pos) + "." + String.format("%03d", upos));
-
         
-        Log.msg(0, catFile.getNum() + " " + catFile.getAnnee() + " | " + String.format("%03d", pos) + "." + String.format("%03d", upos) + " " + String.format("%02d", var) + " | um " + um + " | Q " + quantite + " | desc " + desc);
+        //Log.msg(0, catFile.getNum() + " " + catFile.getAnnee() + " | " + String.format("%03d", pos) + "." + String.format("%03d", upos) + " " + String.format("%02d", var) + " | um " + um + " | Q " + quantite + " | desc " + desc);
     }
     
     //SET
@@ -42,7 +46,7 @@ public class PosSoum {
         for(String element : list)
         {
             if(element.length()>=58)
-                um = element.substring(58, element.length());
+                um = new SimpleStringProperty(element.substring(58, element.length()));
         }
     }   
     
@@ -56,7 +60,7 @@ public class PosSoum {
         for(String element : list)
         {
             if(element.length()>=58)
-                quantite = Double.parseDouble(element.substring(45, 58))/1000;
+                quantite = new SimpleStringProperty(Double.toString(Double.parseDouble(element.substring(45, 58))/1000));
         }
     }    
 
@@ -111,20 +115,31 @@ public class PosSoum {
                 }
             }   
             
-            desc = tmp.trim();           
+            desc = new SimpleStringProperty(tmp.trim());
         }
 
         else            
-            desc = Catalog.getArticle(pos, upos, var);
+            desc = new SimpleStringProperty(Catalog.getArticle(pos, upos, var));
     }     
     
     //PROPERTY
     public StringProperty articleProperty() {
         return article;
-    }    
+    }
+    public StringProperty descProperty(){
+        return desc;
+    }
+    public StringProperty umProperty(){
+        return um;
+    }
+    public StringProperty quantiteProperty() {
+        return quantite;
+    }
     
     //GET
     public String getArticle(){
         return article.get();
     }
+
+
 }

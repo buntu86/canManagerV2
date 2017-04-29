@@ -10,9 +10,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -25,7 +26,7 @@ import javafx.stage.Stage;
 public class CatalogSoum {
     private int num, annee, idTab, charge;
     private String titre;
-    private static ArrayList<PosSoum> listPosSoum = new ArrayList<>();    
+    private ObservableList<PosSoum> listPosSoum = FXCollections.observableArrayList();
     private CatalogFile catalogFile = new CatalogFile();
     
     public CatalogSoum(String str){
@@ -38,7 +39,6 @@ public class CatalogSoum {
 
             setAnneeChargeeCatalog();
             setListPositionsSoum();
-
         }
         else
         {
@@ -133,13 +133,16 @@ public class CatalogSoum {
         return charge;
     }
     
-    public ArrayList<PosSoum> getListPositionSoum(){
+    public ObservableList<PosSoum> getListPositionSoum(){
         return listPosSoum;
     }
 
     private void setListPositionsSoum() {
         if(catalogFile!=null){
             Catalog.setCatalog(catalogFile.getPath().toString());
+            
+            Log.msg(0, "setListPositionsSoum | catalog:" + catalogFile.getNum());
+            
             List<String> list = ReadSoum.getRawData().stream()
                     .filter(line -> line.startsWith("G"+catalogFile.getNum()) && line.substring(41,42).equals("2"))
                     .collect(Collectors.toList());
@@ -148,7 +151,6 @@ public class CatalogSoum {
             {
                 listPosSoum.add(new PosSoum(element, catalogFile));
             }
-            Log.msg(0, "constructor " + catalogFile.getNum() + "." + catalogFile.getAnnee() + " : nbrPositions | " + list.size());
         }        
     }
 }

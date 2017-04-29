@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ListPositionsSoum {
+public class ANNULERListPositionsSoum {
     private ArrayList<PosSoum> positionsSoum = new ArrayList<>();
     private List<String> list = null;
     
-    ListPositionsSoum(CatalogFile catFile) {
+    ANNULERListPositionsSoum(CatalogFile catFile) {
         
         if(catFile!=null){
             Catalog.setCatalog(catFile.getPath().toString());

@@ -23,3 +23,5 @@ public class Log {
         System.out.println(str);
     }
 }
+
+//log4j

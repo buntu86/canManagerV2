@@ -52,6 +52,7 @@ public class Soumission {
     }
 
     private static void setListCatalogSoum() {
+        listCatalogSoum = new ArrayList();
         List<String> list = ReadSoum.getRawData().stream()
                 .filter(line -> line.startsWith("G") && line.substring(41,42).equals("1"))
                 .collect(Collectors.toList());
