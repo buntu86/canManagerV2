@@ -25,6 +25,8 @@
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleOpenCatalog" text="Ouvrir catalogue" />
                   <MenuItem mnemonicParsing="false" onAction="#handleCloseCatalog" text="Fermer catalogue" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="exportCatalog" mnemonicParsing="false" onAction="#exportCatalog" text="Exporter vers *.csv" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Soumission">

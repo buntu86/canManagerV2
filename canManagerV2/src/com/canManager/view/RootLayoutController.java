@@ -1,6 +1,7 @@
 package com.canManager.view;
 
 import com.canManager.MainApp;
+import com.canManager.data.ExportToCsv;
 import com.canManager.utils.Config;
 import com.canManager.utils.Log;
 import com.canManager.utils.Tools;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -21,12 +23,16 @@ import javafx.stage.Stage;
 public class RootLayoutController {
     private AnchorPane catalogLayout, soumissionLayout; 
     private BorderPane rootLayout;
+    private String strSelectedFile = "";
+    @FXML private MenuItem exportCatalog;
     
-    public RootLayoutController(){      
+    public RootLayoutController(){ 
+
     }      
 
     public void setRootLayout(BorderPane rootLayout) {
         this.rootLayout = rootLayout;
+        exportCatalog.setDisable(true);
     }   
     
     @FXML
@@ -39,7 +45,14 @@ public class RootLayoutController {
     private void handleCloseCatalog(){
         rootLayout.getChildren().remove(catalogLayout);
         Tools.setTitlePrimaryStage("");
+        exportCatalog.setDisable(true);
         Log.msg(0, "fermeture du catalogue");
+    }
+
+    @FXML
+    private void exportCatalog(){
+        ExportToCsv export = new ExportToCsv(strSelectedFile);
+        Log.msg(0, "export du catalogue");
     }
     
     @FXML
@@ -54,11 +67,16 @@ public class RootLayoutController {
         {   
             rootLayout.getChildren().remove(catalogLayout);            
             rootLayout.getChildren().remove(soumissionLayout);            
-            showCatalog(selectedFile.toString());
+            strSelectedFile = selectedFile.toString();
+            showCatalog(strSelectedFile);
+            exportCatalog.setDisable(false);
         }   
         
         else
-            System.out.println("Selection du fichier annulé");  
+        {
+            strSelectedFile = "";
+            System.out.println("Selection du fichier annulé");
+        }  
         
     }
 
@@ -153,7 +171,4 @@ public class RootLayoutController {
         e.printStackTrace();
         }     
     }   
-    
-    
-
 }
